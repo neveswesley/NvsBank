@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\NvsBank.WebApi.props" />
+</Project>

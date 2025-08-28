@@ -1,0 +1,17 @@
+D:\Projetos\NvsBank\NvsBank.Infrastructure\bin\Debug\net8.0\NvsBank.Infrastructure.deps.json
+D:\Projetos\NvsBank\NvsBank.Infrastructure\bin\Debug\net8.0\NvsBank.Infrastructure.runtimeconfig.json
+D:\Projetos\NvsBank\NvsBank.Infrastructure\bin\Debug\net8.0\NvsBank.Infrastructure.dll
+D:\Projetos\NvsBank\NvsBank.Infrastructure\bin\Debug\net8.0\NvsBank.Infrastructure.pdb
+D:\Projetos\NvsBank\NvsBank.Infrastructure\bin\Debug\net8.0\NvsBank.Domain.dll
+D:\Projetos\NvsBank\NvsBank.Infrastructure\bin\Debug\net8.0\NvsBank.Domain.pdb
+D:\Projetos\NvsBank\NvsBank.Infrastructure\obj\Debug\net8.0\NvsBank.Infrastructure.csproj.AssemblyReference.cache
+D:\Projetos\NvsBank\NvsBank.Infrastructure\obj\Debug\net8.0\NvsBank.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projetos\NvsBank\NvsBank.Infrastructure\obj\Debug\net8.0\NvsBank.Infrastructure.AssemblyInfoInputs.cache
+D:\Projetos\NvsBank\NvsBank.Infrastructure\obj\Debug\net8.0\NvsBank.Infrastructure.AssemblyInfo.cs
+D:\Projetos\NvsBank\NvsBank.Infrastructure\obj\Debug\net8.0\NvsBank.Infrastructure.csproj.CoreCompileInputs.cache
+D:\Projetos\NvsBank\NvsBank.Infrastructure\obj\Debug\net8.0\NvsBank..80225EA6.Up2Date
+D:\Projetos\NvsBank\NvsBank.Infrastructure\obj\Debug\net8.0\NvsBank.Infrastructure.dll
+D:\Projetos\NvsBank\NvsBank.Infrastructure\obj\Debug\net8.0\refint\NvsBank.Infrastructure.dll
+D:\Projetos\NvsBank\NvsBank.Infrastructure\obj\Debug\net8.0\NvsBank.Infrastructure.pdb
+D:\Projetos\NvsBank\NvsBank.Infrastructure\obj\Debug\net8.0\NvsBank.Infrastructure.genruntimeconfig.cache
+D:\Projetos\NvsBank\NvsBank.Infrastructure\obj\Debug\net8.0\ref\NvsBank.Infrastructure.dll

@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "/kaOzszH699Ksqk3gEilCr51EkYua1oy+v/pUwowYps=",
+  "Source": "NvsBank.WebApi",
+  "BasePath": "_content/NvsBank.WebApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

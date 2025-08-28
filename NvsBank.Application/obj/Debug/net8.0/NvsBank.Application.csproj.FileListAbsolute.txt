@@ -1,0 +1,15 @@
+D:\Projetos\NvsBank\NvsBank.Application\bin\Debug\net8.0\NvsBank.Application.deps.json
+D:\Projetos\NvsBank\NvsBank.Application\bin\Debug\net8.0\NvsBank.Application.dll
+D:\Projetos\NvsBank\NvsBank.Application\bin\Debug\net8.0\NvsBank.Application.pdb
+D:\Projetos\NvsBank\NvsBank.Application\bin\Debug\net8.0\NvsBank.Domain.dll
+D:\Projetos\NvsBank\NvsBank.Application\bin\Debug\net8.0\NvsBank.Domain.pdb
+D:\Projetos\NvsBank\NvsBank.Application\obj\Debug\net8.0\NvsBank.Application.csproj.AssemblyReference.cache
+D:\Projetos\NvsBank\NvsBank.Application\obj\Debug\net8.0\NvsBank.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\Projetos\NvsBank\NvsBank.Application\obj\Debug\net8.0\NvsBank.Application.AssemblyInfoInputs.cache
+D:\Projetos\NvsBank\NvsBank.Application\obj\Debug\net8.0\NvsBank.Application.AssemblyInfo.cs
+D:\Projetos\NvsBank\NvsBank.Application\obj\Debug\net8.0\NvsBank.Application.csproj.CoreCompileInputs.cache
+D:\Projetos\NvsBank\NvsBank.Application\obj\Debug\net8.0\NvsBank..59E204FE.Up2Date
+D:\Projetos\NvsBank\NvsBank.Application\obj\Debug\net8.0\NvsBank.Application.dll
+D:\Projetos\NvsBank\NvsBank.Application\obj\Debug\net8.0\refint\NvsBank.Application.dll
+D:\Projetos\NvsBank\NvsBank.Application\obj\Debug\net8.0\NvsBank.Application.pdb
+D:\Projetos\NvsBank\NvsBank.Application\obj\Debug\net8.0\ref\NvsBank.Application.dll
