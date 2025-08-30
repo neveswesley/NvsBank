@@ -9,3 +9,4 @@ D:\Projetos\NvsBank\NvsBank.Domain\obj\Debug\net8.0\NvsBank.Domain.dll
 D:\Projetos\NvsBank\NvsBank.Domain\obj\Debug\net8.0\refint\NvsBank.Domain.dll
 D:\Projetos\NvsBank\NvsBank.Domain\obj\Debug\net8.0\NvsBank.Domain.pdb
 D:\Projetos\NvsBank\NvsBank.Domain\obj\Debug\net8.0\ref\NvsBank.Domain.dll
+D:\Projetos\NvsBank\NvsBank.Domain\obj\Debug\net8.0\NvsBank.Domain.sourcelink.json

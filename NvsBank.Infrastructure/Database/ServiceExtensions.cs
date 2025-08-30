@@ -11,7 +11,7 @@ public static class ServiceExtensions
     public static void ConfigurePersistenceApp(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-
+        
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         
         services.AddScoped<ICustomerRepository, CustomerRepository>();

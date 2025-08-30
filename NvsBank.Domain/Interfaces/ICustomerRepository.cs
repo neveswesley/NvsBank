@@ -2,4 +2,7 @@
 
 namespace NvsBank.Application.Interfaces;
 
-public interface ICustomerRepository : IBaseRepository<Customer>;
+public interface ICustomerRepository : IBaseRepository<Customer>
+{
+    Task<Customer> GetByDocument(string document);
+}

@@ -15,3 +15,4 @@ D:\Projetos\NvsBank\NvsBank.Infrastructure\obj\Debug\net8.0\refint\NvsBank.Infra
 D:\Projetos\NvsBank\NvsBank.Infrastructure\obj\Debug\net8.0\NvsBank.Infrastructure.pdb
 D:\Projetos\NvsBank\NvsBank.Infrastructure\obj\Debug\net8.0\NvsBank.Infrastructure.genruntimeconfig.cache
 D:\Projetos\NvsBank\NvsBank.Infrastructure\obj\Debug\net8.0\ref\NvsBank.Infrastructure.dll
+D:\Projetos\NvsBank\NvsBank.Infrastructure\obj\Debug\net8.0\NvsBank.Infrastructure.sourcelink.json

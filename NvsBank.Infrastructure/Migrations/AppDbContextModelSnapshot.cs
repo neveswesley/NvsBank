@@ -24,16 +24,19 @@ namespace NvsBank.Infrastructure.Migrations
 
             modelBuilder.Entity("NvsBank.Domain.Entities.Address", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DeletedDate")
                         .HasColumnType("datetime2");
@@ -47,19 +50,23 @@ namespace NvsBank.Infrastructure.Migrations
 
                     b.Property<string>("State")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(2)");
 
                     b.Property<string>("Street")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("ZipCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(8)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Address");
+                    b.HasIndex("CustomerId")
+                        .IsUnique()
+                        .HasFilter("[CustomerId] IS NOT NULL");
+
+                    b.ToTable("Addresses", (string)null);
                 });
 
             modelBuilder.Entity("NvsBank.Domain.Entities.Customer", b =>
@@ -72,55 +79,60 @@ namespace NvsBank.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("BirthDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CustomerStatus")
-                        .HasColumnType("int");
+                    b.Property<string>("CustomerStatus")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)");
 
                     b.Property<DateTime>("DeletedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DocumentNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<DateTime?>("FoundationDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<DateTime>("ModifiedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(20)");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("varchar(30)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
+                    b.ToTable("Customers", (string)null);
+                });
 
-                    b.ToTable("Customers");
+            modelBuilder.Entity("NvsBank.Domain.Entities.Address", b =>
+                {
+                    b.HasOne("NvsBank.Domain.Entities.Customer", "Customer")
+                        .WithOne("Address")
+                        .HasForeignKey("NvsBank.Domain.Entities.Address", "CustomerId");
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("NvsBank.Domain.Entities.Customer", b =>
                 {
-                    b.HasOne("NvsBank.Domain.Entities.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
-
                     b.Navigation("Address");
                 });
 #pragma warning restore 612, 618

@@ -13,3 +13,4 @@ D:\Projetos\NvsBank\NvsBank.Application\obj\Debug\net8.0\NvsBank.Application.dll
 D:\Projetos\NvsBank\NvsBank.Application\obj\Debug\net8.0\refint\NvsBank.Application.dll
 D:\Projetos\NvsBank\NvsBank.Application\obj\Debug\net8.0\NvsBank.Application.pdb
 D:\Projetos\NvsBank\NvsBank.Application\obj\Debug\net8.0\ref\NvsBank.Application.dll
+D:\Projetos\NvsBank\NvsBank.Application\obj\Debug\net8.0\NvsBank.Application.sourcelink.json

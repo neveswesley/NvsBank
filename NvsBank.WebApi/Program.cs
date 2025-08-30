@@ -1,5 +1,6 @@
 using NvsBank.Infrastructure.Database;
 using NvsBank.Application.Services;
+using NvsBank.WebApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 

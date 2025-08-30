@@ -3,9 +3,9 @@ using NvsBank.Application.UseCases.Employee.Commands.CreateEmployee;
 
 namespace NvsBank.Application.UseCases.Customer.Mapping;
 
-public class CreateUserMapping : Profile
+public class CreateCustomerMapping : Profile
 {
-    public CreateUserMapping()
+    public CreateCustomerMapping()
     {
         CreateMap<CreateCustomerCommand, Domain.Entities.Customer>().ReverseMap();
         CreateMap<CreateCustomerResponse, Domain.Entities.Customer>().ReverseMap();
