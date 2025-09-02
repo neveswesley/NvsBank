@@ -22,6 +22,7 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Domain.Entities.Cu
 
         builder.Property(c => c.PhoneNumber).IsRequired().HasColumnType("varchar(20)");
         builder.Property(c => c.Email).IsRequired().HasColumnType("varchar(50)");
+        builder.HasIndex(c=>c.Email).IsUnique();
         builder.Property(c => c.CustomerStatus).IsRequired().HasConversion<string>().HasColumnType("varchar(50)");
     }
 }

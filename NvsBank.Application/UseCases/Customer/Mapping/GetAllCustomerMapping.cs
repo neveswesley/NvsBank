@@ -6,6 +6,7 @@ public class GetAllCustomerMapping : Profile
 {
     public GetAllCustomerMapping()
     {
+       CreateMap<List<Domain.Entities.Customer>, GetAllCustomerResponse>().ReverseMap();
        CreateMap<Domain.Entities.Customer, GetAllCustomerResponse>().ReverseMap();
     }
 }

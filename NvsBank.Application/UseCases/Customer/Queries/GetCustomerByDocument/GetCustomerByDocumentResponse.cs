@@ -13,6 +13,12 @@ public sealed record GetCustomerByDocumentResponse
     public string PhoneNumber { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public CustomerStatus CustomerStatus { get; set; }
+    
+    public string? AddressStreet { get; set; }
+    public string? AddressNumber { get; set; }
+    public string? AddressCity { get; set; }
+    public string? AddressState { get; set; }
+    public string? AddressZipCode { get; set; }
 
     public GetCustomerByDocumentResponse()
     {

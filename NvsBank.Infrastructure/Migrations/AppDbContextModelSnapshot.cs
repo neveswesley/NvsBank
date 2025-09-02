@@ -119,6 +119,9 @@ namespace NvsBank.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.ToTable("Customers", (string)null);
                 });
 

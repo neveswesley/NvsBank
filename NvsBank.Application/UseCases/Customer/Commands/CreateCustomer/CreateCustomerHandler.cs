@@ -24,6 +24,10 @@ public class CreateCustomerHandler : IRequestHandler<CreateCustomerCommand, Crea
     {
         var customer = _mapper.Map<Domain.Entities.Customer>(request);
         
+        var exists = await _userRepository.ExistsByEmailAsync(request.Email);
+        if (exists)
+            throw new ApplicationException("This email already exists");
+        
         await _userRepository.CreateAsync(customer);
 
         await _unitOfWork.Commit(cancellationToken);

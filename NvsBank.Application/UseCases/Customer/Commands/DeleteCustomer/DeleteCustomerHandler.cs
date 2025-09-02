@@ -27,6 +27,6 @@ public class DeleteCustomerHandler : IRequestHandler<DeleteCustomerCommand, Dele
 
         await _unitOfWork.Commit(cancellationToken);
 
-        return new DeleteCustomerResponse("Customer deleted.");
+        return new DeleteCustomerResponse("Customer deleted successfully.");
     }
 }

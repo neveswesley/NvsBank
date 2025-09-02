@@ -15,8 +15,6 @@ public sealed class Customer : BaseEntity
     public string PhoneNumber { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public CustomerStatus CustomerStatus { get; set; }
-    
-    
 
     public void UpdateCustomer(string fullName, CustomerType type, string documentNumber, DateTime? birthDate, DateTime? foundationDate, string phoneNumber, string email, CustomerStatus status)
     {

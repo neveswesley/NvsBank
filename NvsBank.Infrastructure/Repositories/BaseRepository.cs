@@ -7,8 +7,7 @@ namespace NvsBank.Infrastructure.Repositories;
 
 public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
 {
-    
-    private readonly AppDbContext _context;
+    protected readonly AppDbContext _context;
 
     public BaseRepository(AppDbContext context)
     {

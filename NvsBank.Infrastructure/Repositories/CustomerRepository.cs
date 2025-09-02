@@ -16,7 +16,33 @@ public class CustomerRepository : BaseRepository<Customer>, ICustomerRepository
 
     public async Task<Customer> GetByDocument(string document)
     {
-        var customer = await _context.Customers.FirstOrDefaultAsync(x=>x.DocumentNumber == document);
+        var customer = await _context.Customers.FirstOrDefaultAsync(x => x.DocumentNumber == document);
         return customer;
+    }
+
+    public async Task<bool> ExistsByEmailAsync(string email)
+    {
+        return await _context.Customers.AnyAsync(x => x.Email == email);
+    }
+
+    public async Task<Customer> GetByIdAsync(Guid id)
+    {
+        return await _context.Customers
+            .FirstOrDefaultAsync(c => c.Id == id);
+    }
+
+    public async Task<List<Customer>> GetAllWithAddressAsync()
+    {
+        return await _context.Customers.Include(x => x.Address).ToListAsync();
+    }
+
+    public async Task<Customer> GetByIdWithAddressAsync(Guid id)
+    {
+        return await _context.Customers.Include(x => x.Address).FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<Customer> GetByDocumentWithAddressAsync(string document)
+    {
+        return await _context.Customers.Include(x => x.Address).FirstOrDefaultAsync(x => x.DocumentNumber == document);
     }
 }

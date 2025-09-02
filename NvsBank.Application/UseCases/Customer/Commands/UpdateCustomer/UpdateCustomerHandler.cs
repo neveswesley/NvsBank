@@ -8,13 +8,11 @@ public class UpdateCustomerHandler : IRequestHandler<UpdateCustomerCommand, Upda
 {
     
     private readonly ICustomerRepository _customerRepository;
-    private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateCustomerHandler(ICustomerRepository customerRepository, IMapper mapper, IUnitOfWork unitOfWork)
+    public UpdateCustomerHandler(ICustomerRepository customerRepository, IUnitOfWork unitOfWork)
     {
         _customerRepository = customerRepository;
-        _mapper = mapper;
         _unitOfWork = unitOfWork;
     }
 

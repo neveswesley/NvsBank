@@ -16,5 +16,7 @@ public static class ServiceExtensions
         
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         
+        services.AddScoped<IAddressRepository, AddressRepository>();
+        
     }
 }
