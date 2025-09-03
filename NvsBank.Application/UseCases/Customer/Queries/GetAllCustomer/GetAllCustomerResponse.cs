@@ -1,4 +1,5 @@
-﻿using NvsBank.Domain.Entities.Enums;
+﻿using NvsBank.Application.UseCases.Account.Queries.GetAllAccount;
+using NvsBank.Domain.Entities.Enums;
 
 namespace NvsBank.Application.UseCases.Customer.Queries.GetAllCustomer;
 
@@ -19,6 +20,7 @@ public sealed record GetAllCustomerResponse
     public string? AddressCity { get; set; }
     public string? AddressState { get; set; }
     public string? AddressZipCode { get; set; }
+    public IEnumerable<GetAllAccountResponse> Accounts { get; set; } = new List<GetAllAccountResponse>();
 
     public GetAllCustomerResponse()
     {

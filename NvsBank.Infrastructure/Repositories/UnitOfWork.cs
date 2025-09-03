@@ -10,6 +10,7 @@ public class UnitOfWork : IUnitOfWork
 
     public ICustomerRepository Customers { get; }
     public IAddressRepository Addresses { get; }
+    public IAccountRepository Accounts { get; }
 
     public UnitOfWork(AppDbContext context,
         ICustomerRepository customerRepository,

@@ -17,7 +17,7 @@ public class UpdateAddressHandler : IRequestHandler<UpdateAddressCommand, Update
 
     public async Task<UpdateAddressResponse> Handle(UpdateAddressCommand request, CancellationToken cancellationToken)
     {
-        var address = await _addressRepository.GetByIdAsync(request.Id, cancellationToken);
+        var address = await _addressRepository.GetByIdAsync(request.Id);
         
         if (address == null)
             throw new KeyNotFoundException($"User {request.Id} not found");

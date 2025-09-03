@@ -18,7 +18,7 @@ public class GetCustomerByIdHandler : IRequestHandler<GetCustomerByIdQuery, GetC
 
     public async Task<GetCustomerByIdResponse> Handle(GetCustomerByIdQuery request, CancellationToken cancellationToken)
     {
-        var response = await _customerRepository.GetByIdAsync(request.Id, cancellationToken);
+        var response = await _customerRepository.GetByIdAsync(request.Id);
         
         return _mapper.Map<GetCustomerByIdResponse>(response);
         

@@ -18,7 +18,7 @@ public class UpdateCustomerHandler : IRequestHandler<UpdateCustomerCommand, Upda
 
     public async Task<UpdateCustomerResponse> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
     {
-        var customer = await _customerRepository.GetByIdAsync(request.Id, cancellationToken);
+        var customer = await _customerRepository.GetByIdAsync(request.Id);
 
         if (customer == null)
             throw new KeyNotFoundException($"User {request.Id} not found");

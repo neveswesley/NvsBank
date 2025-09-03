@@ -33,7 +33,7 @@ public class CustomerRepository : BaseRepository<Customer>, ICustomerRepository
 
     public async Task<List<Customer>> GetAllWithAddressAsync()
     {
-        return await _context.Customers.Include(x => x.Address).ToListAsync();
+        return await _context.Customers.Include(x => x.Address).Include(c=>c.Account).ToListAsync();
     }
 
     public async Task<Customer> GetByIdWithAddressAsync(Guid id)
@@ -44,5 +44,14 @@ public class CustomerRepository : BaseRepository<Customer>, ICustomerRepository
     public async Task<Customer> GetByDocumentWithAddressAsync(string document)
     {
         return await _context.Customers.Include(x => x.Address).FirstOrDefaultAsync(x => x.DocumentNumber == document);
+    }
+
+    public async Task<Customer> DeleteAddress(Guid id)
+    {
+        var customer = await _context.Customers.FirstOrDefaultAsync(x => x.Id == id);
+        
+        customer.Address = null;
+        
+        return customer;
     }
 }

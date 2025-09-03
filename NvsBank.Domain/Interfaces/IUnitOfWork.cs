@@ -6,5 +6,6 @@ public interface IUnitOfWork
 {
     ICustomerRepository Customers { get; }
     IAddressRepository Addresses { get; }
+    IAccountRepository Accounts { get; }
     Task Commit(CancellationToken cancellationToken);
 }

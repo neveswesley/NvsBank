@@ -18,5 +18,6 @@ public class AddressConfiguration : IEntityTypeConfiguration<Address>
         builder.Property(x => x.ZipCode).IsRequired().HasColumnType("varchar(8)");
 
         builder.HasOne(a =>a.Customer).WithOne(a=>a.Address).HasForeignKey<Customer>(c=>c.AddressId);
+        
     }
 }

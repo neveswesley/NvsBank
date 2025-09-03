@@ -18,5 +18,7 @@ public static class ServiceExtensions
         
         services.AddScoped<IAddressRepository, AddressRepository>();
         
+        services.AddScoped<IAccountRepository, AccountRepository>();
+        
     }
 }

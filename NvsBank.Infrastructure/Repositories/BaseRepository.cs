@@ -34,9 +34,9 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
         _context.Remove(entity);
     }
 
-    public async Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<T> GetByIdAsync(Guid id)
     {
-        return await _context.Set<T>().FirstOrDefaultAsync(a=>a.Id == id, cancellationToken);
+        return await _context.Set<T>().FirstOrDefaultAsync(a=>a.Id == id);
     }
 
     public async Task<List<T>> GetAllAsync(CancellationToken cancellationToken)

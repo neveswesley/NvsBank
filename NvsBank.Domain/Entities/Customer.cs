@@ -9,12 +9,14 @@ public sealed class Customer : BaseEntity
     public string DocumentNumber { get; set; } = string.Empty;
     public DateTime? BirthDate { get; set; }
     public DateTime? FoundationDate { get; set; }
-
-    public Guid? AddressId { get; set; }
-    public Address? Address { get; set; }
     public string PhoneNumber { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public CustomerStatus CustomerStatus { get; set; }
+    
+    public Guid? AddressId { get; set; }
+    public Address? Address { get; set; }
+    public Guid? AccountId { get; set; }
+    public IEnumerable<Account>? Account { get; set; }
 
     public void UpdateCustomer(string fullName, CustomerType type, string documentNumber, DateTime? birthDate, DateTime? foundationDate, string phoneNumber, string email, CustomerStatus status)
     {
@@ -26,6 +28,5 @@ public sealed class Customer : BaseEntity
         PhoneNumber = phoneNumber;
         Email = email;
         CustomerStatus = status;
-
     }
 }

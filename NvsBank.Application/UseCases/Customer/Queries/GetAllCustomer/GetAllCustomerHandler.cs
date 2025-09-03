@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using NvsBank.Application.Interfaces;
+using NvsBank.Application.UseCases.Account.Queries.GetAllAccount;
 
 namespace NvsBank.Application.UseCases.Customer.Queries.GetAllCustomer;
 
@@ -38,9 +39,20 @@ public class GetAllCustomerHandler : IRequestHandler<GetAllCustomerQuery, List<G
             AddressNumber = x.Address?.Number,
             AddressCity = x.Address?.City,
             AddressState = x.Address?.State,
-            AddressZipCode = x.Address?.ZipCode
+            AddressZipCode = x.Address?.ZipCode,
+            Accounts = x.Account.Select(c => new GetAllAccountResponse
+            {
+                Id = c.Id,
+                AccountNumber = c.AccountNumber,
+                Branch = c.Branch,
+                AccountType = c.AccountType,
+                Balance = c.Balance,
+                OverdraftLimit = c.OverdraftLimit,
+                OpeningDate = c.OpeningDate,
+                ClosingDate = c.ClosingDate,
+                Status = c.Status,
+            })
         }).ToList();
-
         return response;
     }
 }

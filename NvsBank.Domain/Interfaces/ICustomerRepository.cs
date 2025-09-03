@@ -10,5 +10,6 @@ public interface ICustomerRepository : IBaseRepository<Customer>
     Task<List<Customer>> GetAllWithAddressAsync();
     Task<Customer> GetByIdWithAddressAsync(Guid id);
     Task<Customer> GetByDocumentWithAddressAsync(string document);
+    Task<Customer> DeleteAddress(Guid id);
     
 }

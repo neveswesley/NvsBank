@@ -25,7 +25,7 @@ public class CreateAddressHandler : IRequestHandler<CreateAddressCommand, Create
         if (address.CustomerId == null)
             throw new ApplicationException("Customer not found.");
 
-        var customer = await _unitOfWork.Customers.GetByIdAsync(address.CustomerId.Value);
+        var customer = await _unitOfWork.Customers.GetByIdAsync(address.CustomerId);
         if (customer == null)
             throw new ApplicationException("Customer not found.");
 

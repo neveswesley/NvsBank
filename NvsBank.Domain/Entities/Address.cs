@@ -8,8 +8,8 @@ public class Address : BaseEntity
     public string State { get; private set; }
     public string ZipCode { get; private set; }
 
-    public Customer? Customer { get; set; }
-    public Guid? CustomerId { get; set; }
+    public Customer Customer { get; set; }
+    public Guid CustomerId { get; set; }
 
     public Address(string street, string number, string city, string state, string zipCode)
     {
