@@ -10,9 +10,10 @@ public class AppDbContext : DbContext
         
     }
 
-    public DbSet<Customer?> Customers { get; set; }
+    public DbSet<Customer> Customers { get; set; }
     public DbSet<Address> Addresses { get; set; }
     public DbSet<Account> Accounts { get; set; }
+    public DbSet<Transaction> Transactions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -23,6 +24,6 @@ public class AppDbContext : DbContext
             .WithOne(a => a.Customer)
             .HasForeignKey<Address>(a => a.CustomerId)
             .OnDelete(DeleteBehavior.Cascade);
-
+        
     }
 }

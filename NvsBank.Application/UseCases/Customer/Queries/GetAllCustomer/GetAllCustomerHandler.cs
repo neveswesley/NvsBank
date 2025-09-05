@@ -51,6 +51,7 @@ public class GetAllCustomerHandler : IRequestHandler<GetAllCustomerQuery, List<G
                 OpeningDate = c.OpeningDate,
                 ClosingDate = c.ClosingDate,
                 Status = c.Status,
+                CustomerId = c.CustomerId
             })
         }).ToList();
         return response;

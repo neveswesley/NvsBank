@@ -1,4 +1,5 @@
 ﻿using NvsBank.Domain.Entities;
+using NvsBank.Domain.Entities.DTO;
 
 namespace NvsBank.Application.Interfaces;
 

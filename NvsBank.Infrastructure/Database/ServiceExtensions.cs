@@ -20,5 +20,7 @@ public static class ServiceExtensions
         
         services.AddScoped<IAccountRepository, AccountRepository>();
         
+        services.AddScoped<ITransactionRepository, TransactionRepository>();
+        
     }
 }
