@@ -26,7 +26,7 @@ public class CreateAccountHandler : IRequestHandler<CreateAccountCommand, Create
         
         var customer = await _unitOfWork.Customers.GetByIdAsync(account.CustomerId);
         if (customer == null)
-            throw new ApplicationException("Custoemr not found.");
+            throw new ApplicationException("Customer not found.");
         
         customer.AccountId = account.Id;
         

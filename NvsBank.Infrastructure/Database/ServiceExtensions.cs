@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NvsBank.Application.Interfaces;
+using NvsBank.Domain.Interfaces;
 using NvsBank.Infrastructure.Repositories;
 
 namespace NvsBank.Infrastructure.Database;
@@ -21,6 +22,8 @@ public static class ServiceExtensions
         services.AddScoped<IAccountRepository, AccountRepository>();
         
         services.AddScoped<ITransactionRepository, TransactionRepository>();
+        
+        services.AddScoped<IBankSlipRepository, BankSlipRepository>();
         
     }
 }

@@ -34,7 +34,7 @@ public class GetAccountStatementHandler : IRequestHandler<GetAccountStatementQue
             .Where(t => t.Timestamp >= fromDate && t.Timestamp <= toDateInclusive)
             .OrderBy(t => t.Timestamp)
             .ToList();
-
+        
         decimal runningBalance = account.Balance;
         foreach (var t in allTransactions.Where(t => t.Timestamp > toDateInclusive))
         {
@@ -42,9 +42,11 @@ public class GetAccountStatementHandler : IRequestHandler<GetAccountStatementQue
         }
 
         var statementItems = new List<StatementItem>();
+        
         foreach (var t in transactions)
         {
             runningBalance += t.TransactionType == TransactionType.Withdraw ? -t.Amount : t.Amount;
+            
             statementItems.Add(new StatementItem
             {
                 TransactionId = t.Id,

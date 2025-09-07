@@ -14,6 +14,7 @@ public class AppDbContext : DbContext
     public DbSet<Address> Addresses { get; set; }
     public DbSet<Account> Accounts { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<BankSlip> BankSlips { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
