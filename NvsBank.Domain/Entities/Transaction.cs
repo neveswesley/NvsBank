@@ -1,4 +1,5 @@
-﻿using NvsBank.Domain.Entities.Enums;
+﻿using System.ComponentModel;
+using NvsBank.Domain.Entities.Enums;
 
 namespace NvsBank.Domain.Entities;
 
@@ -10,7 +11,7 @@ public class Transaction : BaseEntity
     public decimal OldBalance { get; set; }
     public TransactionType TransactionType { get; set; }
     public string Description { get; set; } = String.Empty;
-    public DateTime Timestamp { get; set; } = DateTime.Now;
+    public DateTime Timestamp { get; set; }
 
     public Transaction()
     {

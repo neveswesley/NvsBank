@@ -1,12 +1,7 @@
 using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using NvsBank.Application.UseCases.Customer.Commands.DeleteCustomer;
-using NvsBank.Application.UseCases.Customer.Commands.UpdateCustomer;
-using NvsBank.Application.UseCases.Customer.Queries.GetAllCustomer;
-using NvsBank.Application.UseCases.Customer.Queries.GetCustomerByDocument;
-using NvsBank.Application.UseCases.Customer.Queries.GetCustomerById;
-using NvsBank.Application.UseCases.Employee.Commands.CreateEmployee;
+using NvsBank.Application.UseCases.Customer.Commands;
+using NvsBank.Application.UseCases.Customer.Queries;
 
 namespace NvsBank.WebApi.Controllers
 {
@@ -23,7 +18,7 @@ namespace NvsBank.WebApi.Controllers
         }
         
         [HttpPost("")]
-        public async Task<IActionResult> CreateCustomer([FromBody] CreateCustomerCommand request,
+        public async Task<IActionResult> CreateCustomer([FromBody] CreateCustomer.CreateCustomerCommand request,
             CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(request, cancellationToken);
@@ -33,14 +28,14 @@ namespace NvsBank.WebApi.Controllers
         [HttpGet("")]
         public async Task<IActionResult> GetAllCustomers()
         {
-            var response = await _mediator.Send(new GetAllCustomerQuery());
+            var response = await _mediator.Send(new GetAllCustomer.GetAllCustomerQuery());
             return Ok(response);
         }
 
         [HttpGet("id/{id}")]
         public async Task<IActionResult> GetCustomerById(Guid id)
         {
-            var customer = await _mediator.Send(new GetCustomerByIdQuery(id));
+            var customer = await _mediator.Send(new GetCustomerById.GetCustomerByIdQuery(id));
             
             return Ok(customer);
         }
@@ -48,13 +43,13 @@ namespace NvsBank.WebApi.Controllers
         [HttpGet("document/{documentNumber}")]
         public async Task<IActionResult> GetCustomerByDocumentNumber(string documentNumber)
         {
-            var customer = await _mediator.Send(new GetCustomerByDocumentQuery(documentNumber));
+            var customer = await _mediator.Send(new GetCustomerByDocument.GetCustomerByDocumentQuery(documentNumber));
             
             return Ok(customer);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCustomer(Guid id, [FromBody] UpdateCustomerCommand request,
+        public async Task<IActionResult> UpdateCustomer(Guid id, [FromBody] UpdateCustomer.UpdateCustomerCommand request,
             CancellationToken cancellationToken)
         {
             if (id != request.Id)
@@ -67,7 +62,7 @@ namespace NvsBank.WebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCustomer(Guid id, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new DeleteCustomerCommand(id), cancellationToken);
+            var response = await _mediator.Send(new DeleteCustomer.DeleteCustomerCommand(id), cancellationToken);
             return Ok(response);
         }
         

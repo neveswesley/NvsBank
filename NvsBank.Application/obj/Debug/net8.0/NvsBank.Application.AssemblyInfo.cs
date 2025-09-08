@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NvsBank.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1807fd68a548afe6d2484709ca2f55e08602cf5c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8b062fa03675193ee1da6b4af52c59d35c5937fa")]
 [assembly: System.Reflection.AssemblyProductAttribute("NvsBank.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NvsBank.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

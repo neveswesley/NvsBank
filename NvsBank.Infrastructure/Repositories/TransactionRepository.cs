@@ -4,11 +4,13 @@ using NvsBank.Infrastructure.Database;
 
 namespace NvsBank.Infrastructure.Repositories;
 
-public class TransactionRepository : BaseRepository<Transaction>, ITransactionRepository
+public class TransactionRepository : ITransactionRepository
 {
-    public TransactionRepository(AppDbContext context) : base(context)
+    private readonly AppDbContext _context;
+
+    public TransactionRepository(AppDbContext context)
     {
-        
+        _context = context;
     }
 
     public async Task<List<Transaction>> GetByAccountIdAsync(Guid accountId)
@@ -20,6 +22,7 @@ public class TransactionRepository : BaseRepository<Transaction>, ITransactionRe
     {
         transaction.Id = Guid.NewGuid();
         transaction.Timestamp = DateTime.Now;
+        transaction.CreatedDate = DateTime.Now;
         
         await _context.Transactions.AddAsync(transaction);
         await _context.SaveChangesAsync();

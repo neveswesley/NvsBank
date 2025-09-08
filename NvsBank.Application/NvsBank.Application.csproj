@@ -8,8 +8,7 @@
 
     <ItemGroup>
       <Folder Include="Services\" />
-      <Folder Include="UseCases\BankSlip\Command\" />
-      <Folder Include="UseCases\Transaction\Mapping\" />
+      <Folder Include="UseCases\Account\Validators\" />
     </ItemGroup>
 
     <ItemGroup>

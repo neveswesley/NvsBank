@@ -3,7 +3,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using NvsBank.Application.Shared.Behavior;
-using NvsBank.Application.UseCases.Employee.Commands.CreateCustomer;
+using NvsBank.Application.UseCases.Customer.Commands;
 
 namespace NvsBank.Application.Services;
 
@@ -14,7 +14,7 @@ public static class ServiceExtensions
         services.AddAutoMapper(cfg => { }, typeof(ServiceExtensions).Assembly);
 
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(
-            typeof(CreateCustomerHandler).Assembly
+            typeof(CreateCustomer).Assembly
         ));
         
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
