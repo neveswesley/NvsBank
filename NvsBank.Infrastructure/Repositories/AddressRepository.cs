@@ -13,13 +13,13 @@ public class AddressRepository : BaseRepository<Address>, IAddressRepository
     
     public async Task<List<Address>> GetAllWithCustomerAsync()
     {
-        return await _context.Addresses
+        return await Context.Addresses
             .Include(a => a.Customer)
             .ToListAsync();
     }
 
     public async Task<Address> GetByIdWithCustomerAsync(Guid id)
     {
-        return await _context.Addresses.Include(a => a.Customer).FirstOrDefaultAsync(x => x.Id == id);
+        return await Context.Addresses.Include(a => a.Customer).FirstOrDefaultAsync(x => x.Id == id);
     }
 }

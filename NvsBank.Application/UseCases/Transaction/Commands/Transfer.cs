@@ -15,28 +15,45 @@ public abstract class Transfer
     {
         private readonly IAccountRepository _accountRepository;
         private readonly ITransactionRepository _transactionRepository;
+        private readonly ICustomerRepository _customerRepository;
         private readonly IUnitOfWork _unitOfWork;
 
         public TransferHandler(IAccountRepository accountRepository, ITransactionRepository transactionRepository,
-            IUnitOfWork unitOfWork)
+            ICustomerRepository customerRepository, IUnitOfWork unitOfWork)
         {
             _accountRepository = accountRepository;
             _transactionRepository = transactionRepository;
+            _customerRepository = customerRepository;
             _unitOfWork = unitOfWork;
         }
 
         public async Task<TransferResponse> Handle(TransferCommand request, CancellationToken cancellationToken)
         {
-            var inAccount = await _accountRepository.GetByIdAsync(request.To);
+            var inAccount = await _accountRepository.GetByIdAsync(request.To, cancellationToken);
             if (inAccount == null)
                 throw new ApplicationException("Destination account not found.");
+            if (inAccount.AccountStatus != AccountStatus.Active)
+                throw new ApplicationException("Account is not active.");
 
-            var outAccount = await _accountRepository.GetByIdAsync(request.From);
+            var inCustomer = await _customerRepository.GetByIdAsync(inAccount.CustomerId);
+            if (inCustomer.CustomerStatus != CustomerStatus.Active)
+                throw new ApplicationException("Customer is not active.");
+
+            var outAccount = await _accountRepository.GetByIdAsync(request.From, cancellationToken);
             if (outAccount == null)
                 throw new ApplicationException("Source account not found.");
+            if (outAccount.AccountStatus != AccountStatus.Active)
+                throw new ApplicationException("Account is not active.");
+            
+            var outCustomer = await _customerRepository.GetByIdAsync(outAccount.CustomerId);
+            if (outCustomer.CustomerStatus != CustomerStatus.Active)
+                throw new ApplicationException("Customer is not active.");
 
             if (outAccount.Balance < request.Amount)
                 throw new ApplicationException("Insufficient balance.");
+
+            if (outAccount.Id == inAccount.Id)
+                throw new ApplicationException("Source and destination account cannot be the same.");
 
             outAccount.Balance -= request.Amount;
             inAccount.Balance += request.Amount;

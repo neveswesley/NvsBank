@@ -48,7 +48,7 @@ public abstract class GetCustomerById
                     OverdraftLimit = c.OverdraftLimit,
                     OpeningDate = c.OpeningDate,
                     ClosingDate = c.ClosingDate,
-                    Status = c.Status,
+                    Status = c.AccountStatus,
                     CustomerId = c.CustomerId
                 })
             };

@@ -33,7 +33,7 @@ public abstract class CreateBankSlip
 
         public async Task<BankSlipResponse> Handle(CreateBankSlipCommand request, CancellationToken cancellationToken)
         {
-            var payeeAccount = await _accountRepository.GetByIdAsync(request.PayeeId);
+            var payeeAccount = await _accountRepository.GetByIdAsync(request.PayeeId, cancellationToken);
             if (payeeAccount == null)
                 throw new ApplicationException("Payee not found");
         

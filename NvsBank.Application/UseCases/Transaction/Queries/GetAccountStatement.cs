@@ -25,7 +25,7 @@ public abstract class GetAccountStatement
     public async Task<AccountStatementResponse> Handle(GetAccountStatementQuery request,
         CancellationToken cancellationToken)
     {
-        var account = await _accountRepository.GetByIdAsync(request.AccountId);
+        var account = await _accountRepository.GetByIdAsync(request.AccountId, cancellationToken);
         if (account == null)
             throw new ApplicationException($"Account {request.AccountId} not found");
 

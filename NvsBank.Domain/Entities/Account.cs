@@ -12,7 +12,8 @@ public class Account : BaseEntity
     public decimal OverdraftLimit { get; set; } = decimal.Zero;
     public DateTime OpeningDate { get; set; } = DateTime.Today;
     public DateTime? ClosingDate { get; set; }
-    public AccountStatus Status { get; set; } = AccountStatus.Active;
+    public AccountStatus AccountStatus { get; set; } = AccountStatus.Active;
+    public string? StatusReason { get; set; }
 
     public Guid CustomerId { get; set; }
     public Customer Customer { get; set; }

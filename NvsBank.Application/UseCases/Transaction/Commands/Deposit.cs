@@ -15,20 +15,26 @@ public abstract class Deposit
         private readonly IAccountRepository _accountRepository;
         private readonly ITransactionRepository _transactionRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICustomerRepository _customerRepository;
 
         public DepositHandler(IAccountRepository accountRepository, ITransactionRepository transactionRepository,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork, ICustomerRepository customerRepository)
         {
             _accountRepository = accountRepository;
+            _customerRepository = customerRepository;
             _transactionRepository = transactionRepository;
             _unitOfWork = unitOfWork;
         }
 
         public async Task<TransactionResponse> Handle(DepositCommand request, CancellationToken cancellationToken)
         {
-            var account = await _accountRepository.GetByIdAsync(request.Id);
+            var account = await _accountRepository.GetByIdAsync(request.Id, cancellationToken);
             if (account == null) throw new ApplicationException("Account not found");
-
+            
+            if (account.AccountStatus != AccountStatus.Active)
+                throw new ApplicationException($"Account {request.Id} is not active");
+            
+            
             account.Balance += request.Amount;
             _accountRepository.UpdateAsync(account);
 

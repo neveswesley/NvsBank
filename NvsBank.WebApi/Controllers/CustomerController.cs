@@ -58,11 +58,12 @@ namespace NvsBank.WebApi.Controllers
             var response = await _mediator.Send(request, cancellationToken);
             return Ok(response);
         }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCustomer(Guid id, CancellationToken cancellationToken)
+        
+        [HttpPut("update-status/{id}")]
+        public async Task<IActionResult> UpdateStatus(Guid id, [FromBody] UpdateCustomerStatus.UpdateCustomerStatusRequest request, CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new DeleteCustomer.DeleteCustomerCommand(id), cancellationToken);
+            var command = new UpdateCustomerStatus.ChangeCustomerStatusCommand(id, request.Status, request.Reason);
+            var response = await _mediator.Send(command, cancellationToken);
             return Ok(response);
         }
         

@@ -14,28 +14,36 @@ public abstract class Withdraw
 {
     private readonly IAccountRepository _accountRepository;
     private readonly ITransactionRepository _transactionRepository;
+    private readonly ICustomerRepository _customerRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public WithdrawHandler(IAccountRepository accountRepository, ITransactionRepository transactionRepository,
-        IUnitOfWork unitOfWork)
+    public WithdrawHandler(IAccountRepository accountRepository, ITransactionRepository transactionRepository, ICustomerRepository customerRepository, IUnitOfWork unitOfWork)
     {
         _accountRepository = accountRepository;
         _transactionRepository = transactionRepository;
+        _customerRepository = customerRepository;
         _unitOfWork = unitOfWork;
     }
 
     public async Task<TransactionResponse> Handle(WithdrawCommand request, CancellationToken cancellationToken)
     {
-        var account = await _accountRepository.GetByIdAsync(request.Id);
+        var account = await _accountRepository.GetByIdAsync(request.Id, cancellationToken);
         if (account == null) throw new ApplicationException($"Account {request.Id} not found");
 
+        if (account.AccountStatus != AccountStatus.Active)
+            throw new ApplicationException($"Account {request.Id} is not active");
+
+        var customer = await _customerRepository.GetByIdAsync(account.CustomerId);
+        
+        if (customer.CustomerStatus != CustomerStatus.Active)
+            throw new ApplicationException($"Customer {request.Id} is not active");
+        
         if (account.Balance < request.Amount)
             throw new ApplicationException($"Account {request.Id} has insufficient balance for this withdrawal");
 
         account.Balance -= request.Amount;
 
         _accountRepository.UpdateAsync(account);
-
 
         var transaction = new Domain.Entities.Transaction
         {

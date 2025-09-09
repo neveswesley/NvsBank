@@ -12,6 +12,7 @@ public sealed class Customer : BaseEntity
     public string PhoneNumber { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public CustomerStatus CustomerStatus { get; set; }
+    public string? StatusReason { get; set; }
     
     public Guid? AddressId { get; set; }
     public Address? Address { get; set; }

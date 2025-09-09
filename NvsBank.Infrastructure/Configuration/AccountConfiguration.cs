@@ -20,7 +20,7 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
         builder.Property(x => x.OverdraftLimit).HasColumnType("decimal(18,2)");
         builder.Property(x=>x.OpeningDate).IsRequired();
         builder.Property(x => x.ClosingDate);
-        builder.Property(x => x.Status).IsRequired().HasConversion<string>().HasColumnType("varchar(30)");
+        builder.Property(x => x.AccountStatus).IsRequired().HasConversion<string>().HasColumnType("varchar(30)");
         builder.Property(x=>x.CustomerId).IsRequired();
         
         builder.HasOne<Customer>(x => x.Customer).WithMany(c => c.Account).HasForeignKey(a => a.CustomerId);

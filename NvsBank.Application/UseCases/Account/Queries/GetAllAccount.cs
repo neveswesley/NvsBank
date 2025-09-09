@@ -31,7 +31,7 @@ public abstract class GetAllAccount
                 OverdraftLimit = x.OverdraftLimit,
                 OpeningDate = x.OpeningDate,
                 ClosingDate = x.ClosingDate,
-                Status = x.Status,
+                Status = x.AccountStatus,
                 CustomerId = x.CustomerId
             }).ToList();
         }

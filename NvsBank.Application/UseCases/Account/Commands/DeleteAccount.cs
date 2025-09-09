@@ -24,8 +24,8 @@ public class DeleteAccount
 
         public async Task<DeleteAccountResponse> Handle(Query request, CancellationToken cancellationToken)
         {
-            var account = _accountRepository.GetByIdAsync(request.Id).Result;
-            _accountRepository.DeleteAsync(account);
+            var account = _accountRepository.GetByIdAsync(request.Id, cancellationToken).Result;
+            _accountRepository.InactiveAsync(account);
             await _unitOfWork.Commit(cancellationToken);
             return new DeleteAccountResponse("Account has been deleted.");
         }
