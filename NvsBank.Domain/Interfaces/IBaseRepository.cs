@@ -1,4 +1,5 @@
 ﻿using NvsBank.Domain.Entities;
+using NvsBank.Domain.Entities.DTO;
 
 namespace NvsBank.Application.Interfaces;
 
@@ -8,6 +9,6 @@ public interface IBaseRepository<T> where T : BaseEntity
     void UpdateAsync(T entity);
     void DeleteAsync(T entity);
     Task<T> GetByIdAsync(Guid id);
-    Task<List<T>> GetAllAsync(CancellationToken cancellationToken);
+    Task<PagedResult<T>> GetPagedAsync(int page, int pageSize);
 
 }

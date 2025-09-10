@@ -6,9 +6,9 @@ namespace NvsBank.Application.UseCases.Account.Queries;
 
 public abstract class GetAllAccount
 {
-    public sealed record GetAllAccountQuery : IRequest<List<AccountResponse>>;
+    public sealed record GetAllAccountQuery : IRequest<PagedResult<AccountResponse>>;
 
-    public class GetAllAccountHandler : IRequestHandler<GetAllAccountQuery, List<AccountResponse>>
+    public class GetAllAccountHandler : IRequestHandler<GetAllAccountQuery, PagedResult<AccountResponse>>
     {
         private readonly IAccountRepository _accountRepository;
 
@@ -17,11 +17,11 @@ public abstract class GetAllAccount
             _accountRepository = accountRepository;
         }
 
-        public async Task<List<AccountResponse>> Handle(GetAllAccountQuery request, CancellationToken cancellationToken)
+        public async Task<PagedResult<AccountResponse>> Handle(GetAllAccountQuery request, CancellationToken cancellationToken)
         {
-            var accounts = await _accountRepository.GetAllAsync(cancellationToken);
+            var accountsPaged = await _accountRepository.GetPagedAsync();
 
-            return accounts.Select(x => new AccountResponse
+            var accountsResponse = accountsPaged.Items.Select(x => new AccountResponse
             {
                 Id = x.Id,
                 AccountNumber = x.AccountNumber,
@@ -34,6 +34,14 @@ public abstract class GetAllAccount
                 Status = x.AccountStatus,
                 CustomerId = x.CustomerId
             }).ToList();
+            
+            return new PagedResult<AccountResponse>
+            {
+                Items = accountsResponse,
+                Page = accountsPaged.Page,
+                PageSize = accountsPaged.PageSize,
+                TotalCount = accountsPaged.TotalCount
+            }; 
         }
     }
 }
