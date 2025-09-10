@@ -9,10 +9,11 @@ public interface IAccountRepository
     void UpdateAsync(Account account);
     Task<Account> GetByIdAsync(Guid id, CancellationToken cancellationToken);
     Task<IEnumerable<Account>> GetAllAsync(CancellationToken cancellationToken);
+    Task<IEnumerable<Account>> GetActiveAsync(CancellationToken cancellationToken);
     void InactiveAsync(Account account);
     Task<IEnumerable<Account>> GetAllAccountWithCustomer();
     
-    void AddBalance(Guid id, decimal amount);
+    void Deposit(Guid id, decimal amount);
     void Withdraw(Guid id, decimal amount);
     decimal GetBalance(Guid id);
 }

@@ -7,7 +7,7 @@ namespace NvsBank.Application.UseCases.Account.Commands;
 
 public abstract class UpdateAccountStatus
 {
-    public class UpdateAccountStatusRequest
+    public class UpdateAccountStatusRequest : IRequest<ChangeAccountStatusCommand>
     {
         public AccountStatus Status { get; set; }
         public string? Reason { get; set; }

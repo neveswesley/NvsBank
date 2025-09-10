@@ -27,7 +27,7 @@ public class DeleteAccount
             var account = _accountRepository.GetByIdAsync(request.Id, cancellationToken).Result;
             _accountRepository.InactiveAsync(account);
             await _unitOfWork.Commit(cancellationToken);
-            return new DeleteAccountResponse("Account has been deleted.");
+            return new DeleteAccountResponse("Account has been closed.");
         }
     }
 }

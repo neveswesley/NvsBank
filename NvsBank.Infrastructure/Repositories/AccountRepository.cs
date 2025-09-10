@@ -39,7 +39,13 @@ public class AccountRepository : IAccountRepository
         var account = await _context.Accounts.ToListAsync();
         return account;
     }
-    
+
+    public async Task<IEnumerable<Account>> GetActiveAsync(CancellationToken cancellationToken)
+    {
+        var accounts = await _context.Accounts.Where(x=>x.AccountStatus == AccountStatus.Active).ToListAsync(cancellationToken);
+        return accounts;
+    }
+
     public void InactiveAsync(Account account)
     {
         account.DeletedDate = DateTime.Now;
@@ -53,11 +59,11 @@ public class AccountRepository : IAccountRepository
         return account;
     }
 
-    public void AddBalance(Guid id, decimal amount)
+    public void Deposit(Guid id, decimal amount)
     {
         var result = _context.Accounts.FirstOrDefaultAsync(x => x.Id == id).Result;
         if (result != null)
-            result.AddBalance(amount);
+            result.Deposit(amount);
     }
 
     public void Withdraw(Guid id, decimal amount)

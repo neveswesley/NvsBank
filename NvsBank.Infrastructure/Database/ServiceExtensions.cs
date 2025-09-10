@@ -25,5 +25,7 @@ public static class ServiceExtensions
         
         services.AddScoped<IBankSlipRepository, BankSlipRepository>();
         
+        services.AddScoped<IPaymentRepository, PaymentRepository>();
+        
     }
 }

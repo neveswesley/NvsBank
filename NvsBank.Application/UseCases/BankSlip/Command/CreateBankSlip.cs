@@ -39,6 +39,9 @@ public abstract class CreateBankSlip
         
             var digitableLine = BankSlipGenerator.GenerateDigitableLine(request.Amount, DateTime.Today.AddDays(3), request.PayeeId);
         
+            if (request.PayeeId == request.PayerId)
+                throw new ApplicationException("The payer account cannot be the same as the payee account.");
+            
             var bankSlip = new Domain.Entities.BankSlip
             {
                 Id = Guid.NewGuid(),

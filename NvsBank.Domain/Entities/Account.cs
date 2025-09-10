@@ -18,7 +18,7 @@ public class Account : BaseEntity
     public Guid CustomerId { get; set; }
     public Customer Customer { get; set; }
 
-    public void AddBalance(decimal amount)
+    public void Deposit(decimal amount)
     {
         if (amount < 0)
             throw new InvalidOperationException($"Cannot add balance because amount is negative: {amount}");
