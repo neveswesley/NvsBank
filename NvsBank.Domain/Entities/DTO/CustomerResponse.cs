@@ -2,14 +2,16 @@
 
 namespace NvsBank.Domain.Entities.DTO;
 
-public class CustomerResponse(
-    Guid Id,
-    string FullName,
-    CustomerType type,
-    string documentNumber,
-    DateTime? birthDate,
-    DateTime? foundationDate,
-    string phoneNumber,
-    string email,
-    CustomerStatus status
-);
+public class CustomerResponse
+{
+    public Guid Id { get; set; }
+    public string FullName { get; set; }
+    public CustomerType CustomerType { get; set; }
+    public string DocumentNumber { get; set; }
+    public DateTime? BirthDate { get; set; }
+    public DateTime? FoudationDate { get; set; }
+    public string PhoneNumber { get; set; }
+    public string Email { get; set; }
+    public CustomerStatus CustomerStatus { get; set; }
+
+}

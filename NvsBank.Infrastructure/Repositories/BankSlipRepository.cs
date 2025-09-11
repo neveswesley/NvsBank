@@ -28,13 +28,13 @@ public class BankSlipRepository : IBankSlipRepository
 
     public async Task<BankSlip> GetByPayeeId(Guid payeeId)
     {
-        var payee = await _context.BankSlips.FirstOrDefaultAsync(x=>x.PayeeId == payeeId);
+        var payee = await _context.BankSlips.FirstOrDefaultAsync(x=>x.AccuntPayeeId == payeeId);
         return payee;
     }
 
     public async Task<BankSlip> GetByPayerId(Guid payerId)
     {
-        var payee = await _context.BankSlips.FirstOrDefaultAsync(x=>x.PayerId == payerId);
+        var payee = await _context.BankSlips.FirstOrDefaultAsync(x=>x.CustomerPayerId == payerId);
         return payee;
     }
 }

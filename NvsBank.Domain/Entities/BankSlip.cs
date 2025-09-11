@@ -7,8 +7,8 @@ public class BankSlip
     public decimal Amount { get; set; }
     public DateTime DueDate { get; set; } = DateTime.Today.AddDays(3);
     private bool AllowAfterDueDate { get; set; } = true;
-    public Guid PayeeId { get; set; }
-    public Guid PayerId { get; set; }
+    public Guid AccuntPayeeId { get; set; }
+    public Guid CustomerPayerId { get; set; }
     public bool IsPaid { get; set; } = false;
     public DateTime? PaidAt { get; set; }
 

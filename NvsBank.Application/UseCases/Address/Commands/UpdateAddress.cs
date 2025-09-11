@@ -6,6 +6,15 @@ namespace NvsBank.Application.UseCases.Address.Commands;
 
 public abstract class UpdateAddress
 {
+
+    public class UpdateAddressRequest : IRequest<UpdateAddressCommand>
+    {
+        public string Street { get; set; }
+        public string Number { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string ZipCode { get; set; }
+    }
     public sealed record UpdateAddressCommand(
         Guid Id,
         string Street,

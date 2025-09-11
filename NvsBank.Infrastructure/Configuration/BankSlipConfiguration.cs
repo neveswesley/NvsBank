@@ -14,8 +14,8 @@ public class BankSlipConfiguration : IEntityTypeConfiguration<BankSlip>
         builder.Property(x => x.Id).IsRequired();
         builder.Property(x=>x.DigitableLine).IsRequired();
         builder.Property(x=>x.Amount).IsRequired().HasColumnType("decimal(18,2)");
-        builder.Property(x=>x.PayeeId).IsRequired().HasColumnType("varchar(50)");
-        builder.Property(x=>x.PayerId).IsRequired().HasColumnType("varchar(50)");
+        builder.Property(x=>x.AccuntPayeeId).IsRequired().HasColumnType("varchar(50)");
+        builder.Property(x=>x.CustomerPayerId).IsRequired().HasColumnType("varchar(50)");
         builder.Property(x => x.IsPaid).IsRequired().HasColumnType("bit");
     }
 }

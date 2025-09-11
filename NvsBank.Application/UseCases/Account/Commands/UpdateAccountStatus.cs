@@ -42,7 +42,7 @@ public abstract class UpdateAccountStatus
             account.AccountStatus = request.Status;
             account.StatusReason = request.Reason;
             account.ModifiedDate = DateTime.Now;
-            
+
 
             _accountRepository.UpdateAsync(account);
             await _unitOfWork.Commit(cancellationToken);

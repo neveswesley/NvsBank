@@ -9,14 +9,13 @@ namespace NvsBank.WebApi.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
-        
         private readonly IMediator _mediator;
 
         public CustomerController(IMediator mediator)
         {
             _mediator = mediator;
         }
-        
+
         [HttpPost("")]
         public async Task<IActionResult> CreateCustomer([FromBody] CreateCustomer.CreateCustomerCommand request,
             CancellationToken cancellationToken)
@@ -36,7 +35,7 @@ namespace NvsBank.WebApi.Controllers
         public async Task<IActionResult> GetCustomerById(Guid id)
         {
             var customer = await _mediator.Send(new GetCustomerById.GetCustomerByIdQuery(id));
-            
+
             return Ok(customer);
         }
 
@@ -44,28 +43,27 @@ namespace NvsBank.WebApi.Controllers
         public async Task<IActionResult> GetCustomerByDocumentNumber(string documentNumber)
         {
             var customer = await _mediator.Send(new GetCustomerByDocument.GetCustomerByDocumentQuery(documentNumber));
-            
+
             return Ok(customer);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCustomer(Guid id, [FromBody] UpdateCustomer.UpdateCustomerCommand request,
+        public async Task<IActionResult> UpdateCustomer(Guid id,
+            [FromBody] UpdateCustomer.UpdateCustomerRequest request,
             CancellationToken cancellationToken)
         {
-            if (id != request.Id)
-                return BadRequest("Ids do not match");
-            
-            var response = await _mediator.Send(request, cancellationToken);
+            var command = new UpdateCustomer.UpdateCustomerCommand(id, request.FullName, request.PhoneNumber, request.Email);
+            var response = await _mediator.Send(command, cancellationToken);
             return Ok(response);
         }
-        
+
         [HttpPut("update-status/{id}")]
-        public async Task<IActionResult> UpdateStatus(Guid id, [FromBody] UpdateCustomerStatus.UpdateCustomerStatusRequest request, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateStatus(Guid id,
+            [FromBody] UpdateCustomerStatus.UpdateCustomerStatusRequest request, CancellationToken cancellationToken)
         {
             var command = new UpdateCustomerStatus.ChangeCustomerStatusCommand(id, request.Status, request.Reason);
             var response = await _mediator.Send(command, cancellationToken);
             return Ok(response);
         }
-        
     }
 }

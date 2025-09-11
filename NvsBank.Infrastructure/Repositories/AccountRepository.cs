@@ -38,7 +38,7 @@ public class AccountRepository : IAccountRepository
     }
 
     
-    public async Task<PagedResult<Account>> GetPagedAsync(int page = 1, int pageSize = 10)
+    public async Task<PagedResult<Account>> GetPagedAsync(int page, int pageSize)
     {
         
         if (page < 1) page = 1;

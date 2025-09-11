@@ -19,15 +19,10 @@ public sealed class Customer : BaseEntity
     public Guid? AccountId { get; set; }
     public IEnumerable<Account>? Account { get; set; }
 
-    public void UpdateCustomer(string fullName, CustomerType type, string documentNumber, DateTime? birthDate, DateTime? foundationDate, string phoneNumber, string email, CustomerStatus status)
+    public void UpdateCustomer(string fullName, string phoneNumber, string email)
     {
         FullName = fullName;
-        Type = type;
-        DocumentNumber = documentNumber;
-        BirthDate = birthDate;
-        FoundationDate = foundationDate;
         PhoneNumber = phoneNumber;
         Email = email;
-        CustomerStatus = status;
     }
 }

@@ -48,8 +48,8 @@ public abstract class CreateBankSlip
                 DigitableLine = digitableLine,
                 Amount = request.Amount,
                 DueDate = DateTime.Today.AddDays(3),
-                PayeeId = request.PayeeId,
-                PayerId = request.PayerId,
+                AccuntPayeeId = request.PayeeId,
+                CustomerPayerId = request.PayerId,
                 IsPaid = false
             };
        

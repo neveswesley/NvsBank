@@ -6,7 +6,7 @@ namespace NvsBank.Application.UseCases.Account.Queries;
 
 public abstract class GetAllAccount
 {
-    public sealed record GetAllAccountQuery : IRequest<PagedResult<AccountResponse>>;
+    public sealed record GetAllAccountQuery (int Page, int PageSize): IRequest<PagedResult<AccountResponse>>;
 
     public class GetAllAccountHandler : IRequestHandler<GetAllAccountQuery, PagedResult<AccountResponse>>
     {
@@ -19,7 +19,7 @@ public abstract class GetAllAccount
 
         public async Task<PagedResult<AccountResponse>> Handle(GetAllAccountQuery request, CancellationToken cancellationToken)
         {
-            var accountsPaged = await _accountRepository.GetPagedAsync();
+            var accountsPaged = await _accountRepository.GetPagedAsync(request.Page, request.PageSize);
 
             var accountsResponse = accountsPaged.Items.Select(x => new AccountResponse
             {

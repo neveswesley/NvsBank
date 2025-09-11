@@ -42,8 +42,8 @@ public class PaymentBankSlip
             if (bankSlip.IsPaid)
                 throw new ApplicationException("Bank slip is paid");
             
-            var payee = await _accountRepository.GetByIdAsync(bankSlip.PayeeId, cancellationToken);
-            var payer = await _accountRepository.GetByIdAsync(bankSlip.PayerId, cancellationToken);
+            var payee = await _accountRepository.GetByIdAsync(bankSlip.AccuntPayeeId, cancellationToken);
+            var payer = await _accountRepository.GetByIdAsync(bankSlip.CustomerPayerId, cancellationToken);
 
 
             var payableAmount = bankSlip.CalculatePayableAmount(DateTime.Now);
@@ -59,7 +59,7 @@ public class PaymentBankSlip
             {
                 BankSlipId = bankSlip.Id,
                 PayerAccountId = request.PayerAccountId,
-                PayeeAccountId = bankSlip.PayeeId,
+                PayeeAccountId = bankSlip.AccuntPayeeId,
                 Amount = payableAmount,
                 PaidAt = DateTime.Now
             };
