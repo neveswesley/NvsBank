@@ -25,9 +25,9 @@ namespace NvsBank.WebApi.Controllers
         }
 
         [HttpGet("")]
-        public async Task<IActionResult> GetAllCustomers()
+        public async Task<IActionResult> GetAllCustomers(int page, int pageSize)
         {
-            var response = await _mediator.Send(new GetAllCustomer.GetAllCustomerQuery());
+            var response = await _mediator.Send(new GetAllCustomer.GetAllCustomerQuery(page, pageSize));
             return Ok(response);
         }
 

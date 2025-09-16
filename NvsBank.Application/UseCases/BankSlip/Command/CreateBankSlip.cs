@@ -12,8 +12,8 @@ public abstract class CreateBankSlip
     public sealed record CreateBankSlipCommand : IRequest<BankSlipResponse>
     {
         public decimal Amount { get; set; }
-        public Guid PayeeId { get; set; }
-        public Guid PayerId { get; set; }
+        public Guid AccountPayeeId { get; set; }
+        public Guid CustomerPayerId { get; set; }
     }
     
     public class CreateBankSlipHandler : IRequestHandler<CreateBankSlipCommand, BankSlipResponse>
@@ -33,13 +33,19 @@ public abstract class CreateBankSlip
 
         public async Task<BankSlipResponse> Handle(CreateBankSlipCommand request, CancellationToken cancellationToken)
         {
-            var payeeAccount = await _accountRepository.GetByIdAsync(request.PayeeId, cancellationToken);
-            if (payeeAccount == null)
+            var accountPayee = await _accountRepository.GetByIdAsync(request.AccountPayeeId, cancellationToken);
+            if (accountPayee == null)
                 throw new ApplicationException("Payee not found");
+            
+            var customerPayer = await _unitOfWork.Customers.GetByIdAsync(request.CustomerPayerId);
+            if (customerPayer == null)
+                throw new ApplicationException("Payer not found");
         
-            var digitableLine = BankSlipGenerator.GenerateDigitableLine(request.Amount, DateTime.Today.AddDays(3), request.PayeeId);
-        
-            if (request.PayeeId == request.PayerId)
+            var digitableLine = BankSlipGenerator.GenerateDigitableLine(request.Amount, DateTime.Today.AddDays(3), request.AccountPayeeId);
+
+            var accountPayer = customerPayer.AccountId;
+            
+            if (request.AccountPayeeId == accountPayer)
                 throw new ApplicationException("The payer account cannot be the same as the payee account.");
             
             var bankSlip = new Domain.Entities.BankSlip
@@ -48,8 +54,8 @@ public abstract class CreateBankSlip
                 DigitableLine = digitableLine,
                 Amount = request.Amount,
                 DueDate = DateTime.Today.AddDays(3),
-                AccuntPayeeId = request.PayeeId,
-                CustomerPayerId = request.PayerId,
+                AccountPayeeId = request.AccountPayeeId,
+                CustomerPayerId = request.CustomerPayerId,
                 IsPaid = false
             };
        

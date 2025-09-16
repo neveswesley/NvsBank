@@ -9,7 +9,7 @@ public interface IAccountRepository
     void UpdateAsync(Account account);
     Task<Account> GetByIdAsync(Guid id, CancellationToken cancellationToken);
     Task<PagedResult<Account>> GetPagedAsync(int page, int pageSize);
-    Task<IEnumerable<Account>> GetActiveAsync(CancellationToken cancellationToken);
+    Task<PagedResult<Account>> GetActiveAsync(int page, int pageSize);
     void InactiveAsync(Account account);
     Task<IEnumerable<Account>> GetAllAccountWithCustomer();
     

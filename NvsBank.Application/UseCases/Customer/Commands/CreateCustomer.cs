@@ -3,6 +3,7 @@ using MediatR;
 using NvsBank.Application.Interfaces;
 using NvsBank.Domain.Entities.DTO;
 using NvsBank.Domain.Entities.Enums;
+using NvsBank.Domain.Interfaces;
 
 namespace NvsBank.Application.UseCases.Customer.Commands;
 

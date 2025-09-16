@@ -27,5 +27,7 @@ public static class ServiceExtensions
         
         services.AddScoped<IPaymentRepository, PaymentRepository>();
         
+        services.AddScoped<IPixKeyRepository, PixKeyRepository>();
+        
     }
 }

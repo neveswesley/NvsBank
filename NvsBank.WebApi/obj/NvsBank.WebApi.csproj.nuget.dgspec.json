@@ -35,6 +35,9 @@
             "projectReferences": {
               "D:\\Projetos\\NvsBank\\NvsBank.Domain\\NvsBank.Domain.csproj": {
                 "projectPath": "D:\\Projetos\\NvsBank\\NvsBank.Domain\\NvsBank.Domain.csproj"
+              },
+              "D:\\Projetos\\NvsBank\\NvsBank.Infrastructure\\NvsBank.Infrastructure.csproj": {
+                "projectPath": "D:\\Projetos\\NvsBank\\NvsBank.Infrastructure\\NvsBank.Infrastructure.csproj"
               }
             }
           }

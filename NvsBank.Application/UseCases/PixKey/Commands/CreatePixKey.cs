@@ -1,0 +1,57 @@
+﻿using MediatR;
+using NvsBank.Domain.Entities.DTO;
+using NvsBank.Domain.Entities.Enums;
+using NvsBank.Domain.Interfaces;
+
+namespace NvsBank.Application.UseCases.PixKey.Commands;
+
+public class CreatePixKey
+{
+    public sealed record CreatePixKeyCommand(Guid AccountId, PixKeyType KeyType, string KeyValue)
+        : IRequest<PixKeyResponse>;
+}
+
+public class CreatePixKeyHandler : IRequestHandler<CreatePixKey.CreatePixKeyCommand, PixKeyResponse>
+{
+    private readonly IPixKeyRepository _pixKeyRepository;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public CreatePixKeyHandler(IPixKeyRepository pixKeyRepository, IUnitOfWork unitOfWork)
+    {
+        _pixKeyRepository = pixKeyRepository;
+        _unitOfWork = unitOfWork;
+    }
+
+    public async Task<PixKeyResponse> Handle(CreatePixKey.CreatePixKeyCommand request,
+        CancellationToken cancellationToken)
+    {
+        var exists = await _pixKeyRepository.ExistsAsync(request.AccountId, request.KeyType, cancellationToken);
+
+        if (exists)
+            throw new Exception($"There is already a active key of type {request.KeyType} registered in this account.");
+
+        var pixKey = new Domain.Entities.PixKey
+        {
+            AccountId = request.AccountId,
+            KeyType = request.KeyType,
+            KeyValue = request.KeyValue
+        };
+
+        if (pixKey.KeyType == PixKeyType.EVP)
+        {
+            var newPixKey = await _pixKeyRepository.GenerateUniqueEvPAsync(cancellationToken: cancellationToken);
+            pixKey.KeyValue = newPixKey;
+        }
+
+        await _pixKeyRepository.CreateAsync(pixKey);
+        await _unitOfWork.Commit(cancellationToken);
+
+        return new PixKeyResponse
+        {
+            AccountId = request.AccountId,
+            KeyType = pixKey.KeyType,
+            KeyValue = pixKey.KeyValue,
+            Status = pixKey.Status
+        };
+    }
+}

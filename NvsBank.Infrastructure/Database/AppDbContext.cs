@@ -16,6 +16,7 @@ public class AppDbContext : DbContext
     public DbSet<Transaction> Transactions { get; set; }
     public DbSet<BankSlip> BankSlips { get; set; }
     public DbSet<Payment> Payments { get; set; }
+    public DbSet<PixKey> PixKeys { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -26,6 +27,8 @@ public class AppDbContext : DbContext
             .WithOne(a => a.Customer)
             .HasForeignKey<Address>(a => a.CustomerId)
             .OnDelete(DeleteBehavior.Cascade);
+        
+        modelBuilder.Entity<Account>().HasMany(x=>x.PixKey).WithOne(x=>x.Account).HasForeignKey(x=>x.AccountId);
         
     }
 }

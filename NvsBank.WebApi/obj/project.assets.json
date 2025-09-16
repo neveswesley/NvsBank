@@ -2798,7 +2798,8 @@
           "FluentValidation": "12.0.0",
           "FluentValidation.DependencyInjectionExtensions": "12.0.0",
           "MediatR": "13.0.0",
-          "NvsBank.Domain": "1.0.0"
+          "NvsBank.Domain": "1.0.0",
+          "NvsBank.Infrastructure": "1.0.0"
         },
         "compile": {
           "bin/placeholder/NvsBank.Application.dll": {}

@@ -2,14 +2,15 @@
 using MediatR;
 using NvsBank.Application.Interfaces;
 using NvsBank.Domain.Entities.DTO;
+using NvsBank.Domain.Interfaces;
 
 namespace NvsBank.Application.UseCases.Customer.Queries;
 
 public abstract class GetAllCustomer
 {
-    public sealed record GetAllCustomerQuery : IRequest<List<GetCustomerResponse>>;
+    public sealed record GetAllCustomerQuery (int Page, int PageSize) : IRequest<PagedResult<GetCustomerResponse>>;
     
-    public class GetAllCustomerHandler : IRequestHandler<GetAllCustomerQuery, List<GetCustomerResponse>>
+    public class GetAllCustomerHandler : IRequestHandler<GetAllCustomerQuery, PagedResult<GetCustomerResponse>>
     {
         private readonly ICustomerRepository _customerRepository;
         private readonly IMapper _mapper;
@@ -23,12 +24,12 @@ public abstract class GetAllCustomer
         }
     
     
-        public async Task<List<GetCustomerResponse>> Handle(GetAllCustomerQuery request,
+        public async Task<PagedResult<GetCustomerResponse>> Handle(GetAllCustomerQuery request,
             CancellationToken cancellationToken)
         {
-            var customers = await _unitOfWork.Customers.GetAllWithAddressAsync();
+            var customers = await _unitOfWork.Customers.GetAllWithAddressAsync(request.Page, request.PageSize);
     
-            var response = customers.Select(x => new GetCustomerResponse
+            var response = customers.Items.Select(x => new GetCustomerResponse
             {
                 Id = x.Id,
                 FullName = x.FullName,
@@ -58,7 +59,14 @@ public abstract class GetAllCustomer
                     CustomerId = c.CustomerId
                 })
             }).ToList();
-            return response;
+            
+            return new PagedResult<GetCustomerResponse>
+            {
+                Items = response,
+                Page = customers.Page,
+                PageSize = customers.PageSize,
+                TotalCount = customers.TotalCount
+            };
         }
     }
     

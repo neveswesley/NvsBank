@@ -2,6 +2,7 @@
 using NvsBank.Application.Interfaces;
 using NvsBank.Domain.Entities.DTO;
 using NvsBank.Domain.Entities.Enums;
+using NvsBank.Domain.Interfaces;
 using NvsBank.Infrastructure.Repositories;
 
 namespace NvsBank.Application.UseCases.Transaction.Commands;

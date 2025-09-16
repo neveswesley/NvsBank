@@ -34,13 +34,14 @@ public class AccountRepository : IAccountRepository
     public async Task<Account> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var account = await _context.Accounts.FirstOrDefaultAsync(x => x.Id == id);
+        if (account == null)
+            throw new ApplicationException($"Account {id} not found");
+        
         return account;
     }
-
     
     public async Task<PagedResult<Account>> GetPagedAsync(int page, int pageSize)
     {
-        
         if (page < 1) page = 1;
         if (pageSize < 1) pageSize = 10;
         
@@ -57,11 +58,23 @@ public class AccountRepository : IAccountRepository
         };
     }
 
-    public async Task<IEnumerable<Account>> GetActiveAsync(CancellationToken cancellationToken)
+    public async Task<PagedResult<Account>> GetActiveAsync(int page, int pageSize)
     {
-        var accounts = await _context.Accounts.Where(x => x.AccountStatus == AccountStatus.Active)
-            .ToListAsync(cancellationToken);
-        return accounts;
+        
+        if (page < 1) page = 1;
+        if (pageSize < 1) pageSize = 10;
+        
+        var totalCount = await _dbSet.CountAsync();
+
+        var items = await _dbSet.Where(x=>x.AccountStatus == AccountStatus.Active).OrderBy(x=>x.Id).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+        return new PagedResult<Account>
+        {
+            Items = items,
+            Page = page,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
     }
 
     public void InactiveAsync(Account account)

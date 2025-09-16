@@ -6,11 +6,10 @@ namespace NvsBank.Application.UseCases.Account.Queries;
 
 public class GetActiveAccounts
 {
-    public sealed record GetActiveAccountsQuery : IRequest<List<AccountResponse>>;
+    public sealed record GetActiveAccountsQuery(int Page, int PageSize) : IRequest<PagedResult<AccountResponse>>;
 
-    public class GetActiveAccountHandler : IRequestHandler<GetActiveAccountsQuery, List<AccountResponse>>
+    public class GetActiveAccountHandler : IRequestHandler<GetActiveAccountsQuery, PagedResult<AccountResponse>>
     {
-        
         private readonly IAccountRepository _accountRepository;
 
         public GetActiveAccountHandler(IAccountRepository accountRepository)
@@ -18,11 +17,12 @@ public class GetActiveAccounts
             _accountRepository = accountRepository;
         }
 
-        public async Task<List<AccountResponse>> Handle(GetActiveAccountsQuery request, CancellationToken cancellationToken)
+        public async Task<PagedResult<AccountResponse>> Handle(GetActiveAccountsQuery request,
+            CancellationToken cancellationToken)
         {
-            var activesAccount = await _accountRepository.GetActiveAsync(cancellationToken);
-            
-            return activesAccount.Select(x=> new AccountResponse
+            var activesAccountPaged = await _accountRepository.GetActiveAsync(request.Page, request.PageSize);
+
+            var accountResponses = activesAccountPaged.Items.Select(x => new AccountResponse
             {
                 Id = x.Id,
                 AccountNumber = x.AccountNumber,
@@ -35,6 +35,14 @@ public class GetActiveAccounts
                 Status = x.AccountStatus,
                 CustomerId = x.CustomerId
             }).ToList();
+            
+            return new PagedResult<AccountResponse>
+            {
+                Items = accountResponses,
+                Page = activesAccountPaged.Page,
+                PageSize = activesAccountPaged.PageSize,
+                TotalCount = activesAccountPaged.TotalCount
+            }; 
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NvsBank.Application.Interfaces;
 using NvsBank.Domain.Entities;
+using NvsBank.Domain.Entities.DTO;
 using NvsBank.Domain.Entities.Enums;
+using NvsBank.Domain.Interfaces;
 using NvsBank.Infrastructure.Database;
 
 namespace NvsBank.Infrastructure.Repositories;
@@ -9,15 +11,20 @@ namespace NvsBank.Infrastructure.Repositories;
 public class CustomerRepository : BaseRepository<Customer>, ICustomerRepository
 {
     private readonly AppDbContext _context;
+    private readonly DbSet<Customer> _dbSet;
 
     public CustomerRepository(AppDbContext context) : base(context)
     {
         _context = context;
+        _dbSet = _context.Set<Customer>();
     }
 
     public async Task<Customer> GetByDocument(string document)
     {
         var customer = await _context.Customers.FirstOrDefaultAsync(x => x.DocumentNumber == document);
+        if (customer == null)
+            throw new KeyNotFoundException();
+        
         return customer;
     }
 
@@ -26,30 +33,45 @@ public class CustomerRepository : BaseRepository<Customer>, ICustomerRepository
         return await _context.Customers.AnyAsync(x => x.Email == email);
     }
 
-    public async Task<Customer> GetByIdAsync(Guid id)
-    {
-        return await _context.Customers
-            .FirstOrDefaultAsync(c => c.Id == id);
-    }
-
     public Task<Account> GetActiveCustomer(Guid id, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<List<Customer>> GetAllWithAddressAsync()
+    public async Task<PagedResult<Customer>> GetAllWithAddressAsync(int page, int pageSize)
     {
-        return await _context.Customers.Include(x => x.Address).Include(c=>c.Account).ToListAsync();
+        if (page < 1) page = 1;
+        if (pageSize < 1) pageSize = 10;
+        
+        var totalCount = await _dbSet.CountAsync();
+
+        var items = await _dbSet.Include(x=>x.Address).Include(x=>x.Account).OrderBy(x=>x.Id).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+        return new PagedResult<Customer>
+        {
+            Items = items,
+            Page = page,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
     }
 
     public async Task<Customer> GetByIdWithAddressAsync(Guid id)
     {
-        return await _context.Customers.Include(x => x.Address).FirstOrDefaultAsync(x => x.Id == id);
+        var customer = await _context.Customers.Include(x => x.Address).FirstOrDefaultAsync(x => x.Id == id);
+        if (customer == null)
+            throw new KeyNotFoundException();
+        
+        return customer;
     }
 
     public async Task<Customer> GetByDocumentWithAddressAsync(string document)
     {
-        return await _context.Customers.Include(x => x.Address).FirstOrDefaultAsync(x => x.DocumentNumber == document);
+        var customer = await _context.Customers.Include(x => x.Address).FirstOrDefaultAsync(x => x.DocumentNumber == document);
+        if (customer == null)
+            throw new KeyNotFoundException("Customer not found");
+        
+        return customer;
     }
 
     public async Task<Customer> DeleteAddress(Guid id)
@@ -71,7 +93,6 @@ public class CustomerRepository : BaseRepository<Customer>, ICustomerRepository
 
     public void ActiveAsync(Customer customer)
     {
-        customer.DeletedDate = DateTime.Now;
         customer.CustomerStatus = CustomerStatus.Active;
         
         _context.Customers.Update(customer);

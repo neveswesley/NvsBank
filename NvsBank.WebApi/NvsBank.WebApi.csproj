@@ -13,10 +13,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\NvsBank.Application\NvsBank.Application.csproj" />
       <ProjectReference Include="..\NvsBank.Infrastructure\NvsBank.Infrastructure.csproj" />
     </ItemGroup>

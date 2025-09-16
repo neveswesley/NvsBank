@@ -7,9 +7,9 @@ namespace NvsBank.Application.UseCases.Address.Queries;
 
 public abstract class GetAllAddress
 {
-    public sealed record GetAllAddressQuery : IRequest<List<AddressResponse>>;
+    public sealed record GetAllAddressQuery (int Page, int PageSize) : IRequest<PagedResult<AddressResponse>>;
     
-    public class GetAllAddressHandler : IRequestHandler<GetAllAddressQuery, List<AddressResponse>>
+    public class GetAllAddressHandler : IRequestHandler<GetAllAddressQuery, PagedResult<AddressResponse>>
     {
         private readonly IAddressRepository _addressRepository;
         private readonly IUnitOfWork _unitOfWork;
@@ -23,15 +23,15 @@ public abstract class GetAllAddress
         }
 
 
-        public async Task<List<AddressResponse>> Handle(GetAllAddressQuery request,
+        public async Task<PagedResult<AddressResponse>> Handle(GetAllAddressQuery request,
             CancellationToken cancellationToken)
         {
-            var response = await _addressRepository.GetAllWithCustomerAsync();
+            var addressPaged = await _addressRepository.GetAllWithCustomerAsync(request.Page, request.PageSize);
 
-            if (response == null)
+            if (addressPaged == null)
                 throw new ApplicationException("Address not found.");
 
-            return response.Select(x => new AddressResponse
+            var addressResponse = addressPaged.Items.Select(x => new AddressResponse
             {
                 Id = x.Id,
                 Street = x.Street,
@@ -41,6 +41,14 @@ public abstract class GetAllAddress
                 ZipCode = x.ZipCode,
                 CustomerId = x.Customer.Id
             }).ToList();
+            
+            return new PagedResult<AddressResponse>
+            {
+                Items = addressResponse,
+                Page = addressPaged.Page,
+                PageSize = addressPaged.PageSize,
+                TotalCount = addressPaged.TotalCount
+            };
         }
     }
     

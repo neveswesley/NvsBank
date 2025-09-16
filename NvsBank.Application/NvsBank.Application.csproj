@@ -7,7 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Services\" />
       <Folder Include="UseCases\Account\Validators\" />
     </ItemGroup>
 
@@ -20,6 +19,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\NvsBank.Domain\NvsBank.Domain.csproj" />
+      <ProjectReference Include="..\NvsBank.Infrastructure\NvsBank.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
