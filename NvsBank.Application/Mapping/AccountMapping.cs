@@ -9,7 +9,7 @@ public class AccountMapping : Profile
     public AccountMapping()
     {
         CreateMap<List<Domain.Entities.Account>, AccountResponse>().ReverseMap();
-        CreateMap<CreateAccountRequest, Domain.Entities.Account>().ReverseMap();
+        CreateMap<CreateAccountCommand, Domain.Entities.Account>().ReverseMap();
         CreateMap<AccountResponse, Domain.Entities.Account>().ReverseMap();
     }
 }

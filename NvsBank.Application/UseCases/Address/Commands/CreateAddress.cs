@@ -14,7 +14,7 @@ public abstract class CreateAddress
         public string City { get; set; }
         public string State { get; set; }
         public string ZipCode { get; set; }
-        public Guid? CustomerId { get; set; }
+        public Guid CustomerId { get; set; }
     }
     
     public class CreateAddressHandler : IRequestHandler<CreateAddressCommand, AddressResponse>

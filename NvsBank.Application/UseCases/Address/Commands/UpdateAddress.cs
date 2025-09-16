@@ -6,7 +6,6 @@ namespace NvsBank.Application.UseCases.Address.Commands;
 
 public abstract class UpdateAddress
 {
-
     public class UpdateAddressRequest : IRequest<UpdateAddressCommand>
     {
         public string Street { get; set; }

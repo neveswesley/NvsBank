@@ -6,13 +6,13 @@ using NvsBank.Domain.Entities.Enums;
 
 namespace NvsBank.Application.UseCases.Account.Commands;
 
-public sealed record CreateAccountRequest : IRequest<AccountResponse>
+public sealed record CreateAccountCommand : IRequest<AccountResponse>
 {
     public AccountType AccountType { get; set; }
     public Guid CustomerId { get; set; }
 }
 
-public class CreateAccountHandler : IRequestHandler<CreateAccountRequest, AccountResponse>
+public class CreateAccountHandler : IRequestHandler<CreateAccountCommand, AccountResponse>
 {
     private readonly IAccountRepository _accountRepository;
     private readonly IUnitOfWork _unitOfWork;
@@ -25,9 +25,9 @@ public class CreateAccountHandler : IRequestHandler<CreateAccountRequest, Accoun
         _mapper = mapper;
     }
 
-    public async Task<AccountResponse> Handle(CreateAccountRequest request, CancellationToken cancellationToken)
+    public async Task<AccountResponse> Handle(CreateAccountCommand command, CancellationToken cancellationToken)
     {
-        var account = _mapper.Map<Domain.Entities.Account>(request);
+        var account = _mapper.Map<Domain.Entities.Account>(command);
 
         await _accountRepository.CreateAsync(account);
 
