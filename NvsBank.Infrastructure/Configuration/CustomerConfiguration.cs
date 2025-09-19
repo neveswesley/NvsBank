@@ -13,16 +13,15 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Domain.Entities.Cu
         builder.Property(x => x.Id).IsRequired();
 
         builder.Property(c => c.FullName).IsRequired().HasColumnType("varchar(100)");
-        builder.Property(c => c.Type).IsRequired().HasConversion<string>().HasColumnType("varchar(30)");
+        builder.Property(c => c.CustomerType).IsRequired().HasConversion<string>().HasColumnType("varchar(30)");
         builder.Property(c => c.DocumentNumber).IsRequired().HasColumnType("varchar(50)");
         builder.Property(c => c.BirthDate).HasColumnType("datetime");
-        builder.Property(c => c.FoundationDate).HasColumnType("datetime");
 
         builder.HasOne(c => c.Address).WithOne(c => c.Customer).HasForeignKey<Address>(a => a.CustomerId);
 
         builder.Property(c => c.PhoneNumber).IsRequired().HasColumnType("varchar(20)");
         builder.Property(c => c.Email).IsRequired().HasColumnType("varchar(50)");
         builder.HasIndex(c=>c.Email).IsUnique();
-        builder.Property(c => c.CustomerStatus).IsRequired().HasConversion<string>().HasColumnType("varchar(50)");
+        builder.Property(c => c.Status).IsRequired().HasConversion<string>().HasColumnType("varchar(50)");
     }
 }

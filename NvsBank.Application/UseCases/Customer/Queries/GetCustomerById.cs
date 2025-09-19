@@ -27,19 +27,18 @@ public abstract class GetCustomerById
             {
                 Id = customer.Id,
                 FullName = customer.FullName,
-                Type = customer.Type,
+                Type = customer.CustomerType,
                 DocumentNumber = customer.DocumentNumber,
                 BirthDate = customer.BirthDate,
-                FoundationDate = customer.FoundationDate,
                 PhoneNumber = customer.PhoneNumber,
                 Email = customer.Email,
-                CustomerStatus = customer.CustomerStatus,
+                CustomerStatus = customer.Status,
                 AddressStreet = customer.Address?.Street,
                 AddressNumber = customer.Address?.Number,
                 AddressCity = customer.Address?.City,
                 AddressState = customer.Address?.State,
                 AddressZipCode = customer.Address?.ZipCode,
-                Accounts = customer.Account.Select(c => new AccountResponse
+                Accounts = customer.Accounts.Select(c => new AccountResponse
                 {
                     Id = c.Id,
                     AccountNumber = c.AccountNumber,

@@ -11,9 +11,9 @@ public abstract class UpdateCustomer
 
     public class UpdateCustomerRequest : IRequest<UpdateCustomerCommand>
     {
-        public string FullName { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Email { get; set; }
+        public string FullName { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
     }
     public sealed record UpdateCustomerCommand(
         Guid Id,
@@ -49,13 +49,12 @@ public abstract class UpdateCustomer
             {
                 Id = customer.Id,
                 FullName = customer.FullName,
-                CustomerType = customer.Type,
+                Type = customer.CustomerType,
                 DocumentNumber = customer.DocumentNumber,
                 BirthDate = customer.BirthDate,
-                FoudationDate = customer.FoundationDate,
                 PhoneNumber = customer.PhoneNumber,
                 Email = customer.Email,
-                CustomerStatus = customer.CustomerStatus
+                Status = customer.Status
             };
 
         }

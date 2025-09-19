@@ -271,3 +271,7 @@ D:\Projetos\NvsBank\NvsBank.WebApi\bin\Debug\net8.0\runtimes\win\lib\net6.0\Syst
 D:\Projetos\NvsBank\NvsBank.WebApi\bin\Debug\net8.0\NvsBank.Infrastructure.dll
 D:\Projetos\NvsBank\NvsBank.WebApi\bin\Debug\net8.0\NvsBank.Infrastructure.pdb
 D:\Projetos\NvsBank\NvsBank.WebApi\obj\Debug\net8.0\NvsBank.WebApi.sourcelink.json
+D:\Projetos\NvsBank\NvsBank.WebApi\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\Projetos\NvsBank\NvsBank.WebApi\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+D:\Projetos\NvsBank\NvsBank.WebApi\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+D:\Projetos\NvsBank\NvsBank.WebApi\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll

@@ -23,6 +23,6 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
         builder.Property(x => x.AccountStatus).IsRequired().HasConversion<string>().HasColumnType("varchar(30)");
         builder.Property(x=>x.CustomerId).IsRequired();
         
-        builder.HasOne<Customer>(x => x.Customer).WithMany(c => c.Account).HasForeignKey(a => a.CustomerId);
+        builder.HasOne<Customer>(x => x.Customer).WithMany(c => c.Accounts).HasForeignKey(a => a.CustomerId);
     }
 }

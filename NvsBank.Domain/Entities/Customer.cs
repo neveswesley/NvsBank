@@ -2,22 +2,13 @@
 
 namespace NvsBank.Domain.Entities;
 
-public sealed class Customer : BaseEntity
+public sealed class Customer : Person
 {
-    public string FullName { get; set; } = string.Empty;
-    public CustomerType Type { get; set; }
-    public string DocumentNumber { get; set; } = string.Empty;
-    public DateTime? BirthDate { get; set; }
-    public DateTime? FoundationDate { get; set; }
-    public string PhoneNumber { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
-    public CustomerStatus CustomerStatus { get; set; }
-    public string? StatusReason { get; set; }
-    
+    public CustomerType? CustomerType { get; set; }
     public Guid? AddressId { get; set; }
     public Address? Address { get; set; }
-    public Guid? AccountId { get; set; }
-    public IEnumerable<Account>? Account { get; set; }
+    public Guid AccountId { get; set; }
+    public ICollection<Account> Accounts { get; set; } = new List<Account>();
 
     public void UpdateCustomer(string fullName, string phoneNumber, string email)
     {
@@ -25,4 +16,25 @@ public sealed class Customer : BaseEntity
         PhoneNumber = phoneNumber;
         Email = email;
     }
+
+    public void CompleteRegistration(CustomerType type, string documentNumber, DateTime birthDate, string phoneNumber)
+    {
+        if (CustomerType != null)
+            throw new ApplicationException("CustomerType already exists.");
+        CustomerType = type;
+        
+        if (DocumentNumber != null)
+            throw new ApplicationException("CustomerType already exists.");
+        DocumentNumber = documentNumber;
+        
+        if (BirthDate != null)
+            throw new ApplicationException("CustomerType already exists.");
+        BirthDate = birthDate;
+        
+        if (PhoneNumber != null)
+            throw new ApplicationException("CustomerType already exists.");
+        PhoneNumber = phoneNumber;
+        
+    }
+    
 }

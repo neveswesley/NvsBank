@@ -1,9 +1,11 @@
 ﻿using System.Reflection;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NvsBank.Application.Shared.Behavior;
 using NvsBank.Application.UseCases.Customer.Commands;
+using NvsBank.Infrastructure.Database;
 
 namespace NvsBank.Application.Services;
 
@@ -20,6 +22,8 @@ public static class ServiceExtensions
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        
+        
 
         return services;
     }

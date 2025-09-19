@@ -1,6 +1,6 @@
 ﻿namespace NvsBank.Domain.Entities.Enums;
 
-public enum CustomerStatus
+public enum PersonStatus
 {
     Active = 1,
     Inactive = 2,

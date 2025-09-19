@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using NvsBank.Application.Interfaces;
+using NvsBank.Domain.Entities;
 using NvsBank.Domain.Entities.DTO;
 using NvsBank.Domain.Entities.Enums;
 using NvsBank.Domain.Interfaces;
@@ -11,11 +12,11 @@ public abstract class UpdateCustomerStatus
 {
     public class UpdateCustomerStatusRequest
     {
-        public CustomerStatus Status { get; set; }
+        public PersonStatus Status { get; set; }
         public string? Reason { get; set; }
     }
 
-    public sealed record ChangeCustomerStatusCommand(Guid CustomerId, CustomerStatus Status, string? Reason)
+    public sealed record ChangeCustomerStatusCommand(Guid CustomerId, PersonStatus Status, string? Reason)
         : IRequest<CustomerStatusResponse>;
 
     public class UpdateCustomerStatusHandler : IRequestHandler<ChangeCustomerStatusCommand, CustomerStatusResponse>
@@ -36,12 +37,12 @@ public abstract class UpdateCustomerStatus
             if (customer == null)
                 throw new ApplicationException("Customer not found.");
             
-            var oldStatus = customer.CustomerStatus;
+            var oldStatus = customer.Status;
 
-            if (oldStatus == CustomerStatus.Closed && request.Status == CustomerStatus.Active)
+            if (oldStatus == PersonStatus.Closed && request.Status == PersonStatus.Active)
                 throw new ApplicationException("Closed customer cannot be reactivated.");
 
-            customer.CustomerStatus = request.Status;
+            customer.Status = request.Status;
             customer.StatusReason = request.Reason;
             customer.ModifiedDate = DateTime.Now;
 
@@ -52,7 +53,7 @@ public abstract class UpdateCustomerStatus
             {
                 CustomerId = customer.Id,
                 OldStatus = oldStatus,
-                NewStatus = customer.CustomerStatus,
+                NewStatus = customer.Status,
                 Reason = customer.StatusReason,
                 ChangedAt = customer.ModifiedDate
             };

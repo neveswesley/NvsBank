@@ -37,7 +37,7 @@ public abstract class Transfer
                 throw new ApplicationException("Account is not active.");
 
             var inCustomer = await _customerRepository.GetByIdAsync(inAccount.CustomerId);
-            if (inCustomer.CustomerStatus != CustomerStatus.Active)
+            if (inCustomer.Status != PersonStatus.Active)
                 throw new ApplicationException("Customer is not active.");
 
             var outAccount = await _accountRepository.GetByIdAsync(request.From, cancellationToken);
@@ -47,7 +47,7 @@ public abstract class Transfer
                 throw new ApplicationException("Account is not active.");
             
             var outCustomer = await _customerRepository.GetByIdAsync(outAccount.CustomerId);
-            if (outCustomer.CustomerStatus != CustomerStatus.Active)
+            if (outCustomer.Status != PersonStatus.Active)
                 throw new ApplicationException("Customer is not active.");
 
             if (outAccount.Balance < request.Amount)

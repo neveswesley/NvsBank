@@ -11,11 +11,4 @@ public interface ICustomerRepository : IBaseRepository<Customer>
     Task<PagedResult<Customer>> GetAllWithAddressAsync(int page, int pageSize);
     Task<Customer> GetByIdWithAddressAsync(Guid id);
     Task<Customer> GetByDocumentWithAddressAsync(string document);
-    Task<Customer> DeleteAddress(Guid id);
-    void InactiveAsync(Customer customer);
-    void ActiveAsync(Customer customer);
-    void SuspendAsync(Customer customer);
-    void BlockAsync(Customer customer);
-    void CloseAsync(Customer customer);
-    
 }

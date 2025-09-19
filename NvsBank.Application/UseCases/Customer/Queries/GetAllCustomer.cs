@@ -33,19 +33,18 @@ public abstract class GetAllCustomer
             {
                 Id = x.Id,
                 FullName = x.FullName,
-                Type = x.Type,
+                Type = x.CustomerType,
                 DocumentNumber = x.DocumentNumber,
                 BirthDate = x.BirthDate,
-                FoundationDate = x.FoundationDate,
                 PhoneNumber = x.PhoneNumber,
                 Email = x.Email,
-                CustomerStatus = x.CustomerStatus,
+                CustomerStatus = x.Status,
                 AddressStreet = x.Address?.Street,
                 AddressNumber = x.Address?.Number,
                 AddressCity = x.Address?.City,
                 AddressState = x.Address?.State,
                 AddressZipCode = x.Address?.ZipCode,
-                Accounts = x.Account.Select(c => new AccountResponse
+                Accounts = x.Accounts.Select(c => new AccountResponse
                 {
                     Id = c.Id,
                     AccountNumber = c.AccountNumber,

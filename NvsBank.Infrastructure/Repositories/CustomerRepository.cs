@@ -45,7 +45,7 @@ public class CustomerRepository : BaseRepository<Customer>, ICustomerRepository
         
         var totalCount = await _dbSet.CountAsync();
 
-        var items = await _dbSet.Include(x=>x.Address).Include(x=>x.Account).OrderBy(x=>x.Id).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+        var items = await _dbSet.Include(x=>x.Address).Include(x=>x.Accounts).OrderBy(x=>x.Id).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
         return new PagedResult<Customer>
         {
@@ -86,14 +86,14 @@ public class CustomerRepository : BaseRepository<Customer>, ICustomerRepository
     public void InactiveAsync(Customer customer)
     {
         customer.DeletedDate = DateTime.Now;
-        customer.CustomerStatus = CustomerStatus.Inactive;
+        customer.Status = PersonStatus.Inactive;
         
         _context.Customers.Update(customer);
     }
 
     public void ActiveAsync(Customer customer)
     {
-        customer.CustomerStatus = CustomerStatus.Active;
+        customer.Status = PersonStatus.Active;
         
         _context.Customers.Update(customer);
     }
@@ -101,7 +101,7 @@ public class CustomerRepository : BaseRepository<Customer>, ICustomerRepository
     public void SuspendAsync(Customer customer)
     {
         customer.DeletedDate = DateTime.Now;
-        customer.CustomerStatus = CustomerStatus.Suspended;
+        customer.Status = PersonStatus.Suspended;
         
         _context.Customers.Update(customer);
     }
@@ -109,7 +109,7 @@ public class CustomerRepository : BaseRepository<Customer>, ICustomerRepository
     public void BlockAsync(Customer customer)
     {
         customer.DeletedDate = DateTime.Now;
-        customer.CustomerStatus = CustomerStatus.Blocked;
+        customer.Status = PersonStatus.Blocked;
         
         _context.Customers.Update(customer);
     }
@@ -117,7 +117,7 @@ public class CustomerRepository : BaseRepository<Customer>, ICustomerRepository
     public void CloseAsync(Customer customer)
     {
         customer.DeletedDate = DateTime.Now;
-        customer.CustomerStatus = CustomerStatus.Closed;
+        customer.Status = PersonStatus.Closed;
         
         _context.Customers.Update(customer);
     }

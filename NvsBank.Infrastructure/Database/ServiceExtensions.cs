@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Identity.Client;
 using NvsBank.Application.Interfaces;
 using NvsBank.Domain.Interfaces;
 using NvsBank.Infrastructure.Repositories;
@@ -29,5 +30,10 @@ public static class ServiceExtensions
         
         services.AddScoped<IPixKeyRepository, PixKeyRepository>();
         
+        services.AddScoped<ITokenService, TokenService>();
+        
+        services.AddScoped<IUserRepository, UserRepository>();
+        
+        services.AddScoped<IEmployeeRepository, EmployeeRepository>();
     }
 }

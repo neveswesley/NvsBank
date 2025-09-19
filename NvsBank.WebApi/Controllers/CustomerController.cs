@@ -16,11 +16,11 @@ namespace NvsBank.WebApi.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("")]
-        public async Task<IActionResult> CreateCustomer([FromBody] CreateCustomer.CreateCustomerCommand request,
+        [HttpPut("/customer/complete/{id}")]
+        public async Task<IActionResult> Complete(Guid id, [FromBody] CompleteCustomerRegistration.CompleteCustomerRegistrationRequest request,
             CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(request, cancellationToken);
+            var response = await _mediator.Send(new CompleteCustomerRegistration.CompleteCustomerRegistrationCommand(id, request.CustomerType, request.DocumentNumber, request.BirthDate, request.PhoneNumber), cancellationToken);
             return Ok(response);
         }
 

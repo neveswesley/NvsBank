@@ -36,7 +36,7 @@ public abstract class Withdraw
 
         var customer = await _customerRepository.GetByIdAsync(account.CustomerId);
         
-        if (customer.CustomerStatus != CustomerStatus.Active)
+        if (customer.Status != PersonStatus.Active)
             throw new ApplicationException($"Customer {request.Id} is not active");
         
         if (account.Balance < request.Amount)
