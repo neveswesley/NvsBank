@@ -3,6 +3,7 @@ using MediatR;
 using NvsBank.Application.Interfaces;
 using NvsBank.Application.Shared.Extras;
 using NvsBank.Domain.Entities.DTO;
+using NvsBank.Domain.Extras;
 using NvsBank.Domain.Interfaces;
 
 namespace NvsBank.Application.UseCases.BankSlip.Command;

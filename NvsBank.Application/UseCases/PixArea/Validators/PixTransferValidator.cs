@@ -3,9 +3,9 @@ using NvsBank.Application.UseCases.PixKey.Commands;
 
 namespace NvsBank.Application.UseCases.Transaction.Validators;
 
-public class TransferValidator : AbstractValidator<PixTransferCommand>
+public class PixTransferValidator : AbstractValidator<PixTransferCommand>
 {
-    public TransferValidator()
+    public PixTransferValidator()
     {
         RuleFor(x=>x.FromAccountId).NotEmpty().WithMessage("From account id is required");
         

@@ -21,6 +21,8 @@
 
     <ItemGroup>
       <Folder Include="UseCases\Auth\Dtos\" />
+      <Folder Include="UseCases\Transaction\Commands\" />
+      <Folder Include="UseCases\Transaction\Validators\" />
     </ItemGroup>
 
 </Project>

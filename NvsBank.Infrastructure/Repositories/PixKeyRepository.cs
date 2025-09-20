@@ -7,15 +7,15 @@ using NvsBank.Infrastructure.Database;
 
 namespace NvsBank.Infrastructure.Repositories;
 
-public class PixKeyRepository : BaseRepository<PixKey>, IPixKeyRepository
+public class PixKeyRepository : BaseRepository<PixArea>, IPixKeyRepository
 {
     private readonly AppDbContext _context;
-    private readonly DbSet<PixKey> _dbSet;
+    private readonly DbSet<PixArea> _dbSet;
 
     public PixKeyRepository(AppDbContext context) : base(context)
     {
         _context = context;
-        _dbSet = context.Set<PixKey>();
+        _dbSet = context.Set<PixArea>();
     }
 
     public async Task<string> GenerateUniqueEvPAsync(int maxAttempts = 5, CancellationToken cancellationToken = default)
@@ -28,7 +28,7 @@ public class PixKeyRepository : BaseRepository<PixKey>, IPixKeyRepository
 
             var candidate = Guid.NewGuid().ToString("N");
 
-            var exists = await Context.PixKeys
+            var exists = await Context.PixAreas
                 .AsNoTracking()
                 .AnyAsync(p => p.KeyValue == candidate, cancellationToken);
 
@@ -40,11 +40,11 @@ public class PixKeyRepository : BaseRepository<PixKey>, IPixKeyRepository
             $"Não foi possível gerar uma chave EVP única após {maxAttempts} tentativas.");
     }
 
-    public async Task<PixKey> CreateEvPForAccountAsync(Guid accountId, int maxAttemps = 5)
+    public async Task<PixArea> CreateEvPForAccountAsync(Guid accountId, int maxAttemps = 5)
     {
         var evp = await GenerateUniqueEvPAsync(maxAttemps);
 
-        var pixKey = new PixKey
+        var pixKey = new PixArea
         {
             Id = Guid.NewGuid(),
             AccountId = accountId,
@@ -53,7 +53,7 @@ public class PixKeyRepository : BaseRepository<PixKey>, IPixKeyRepository
             Status = PixKeyStatus.Pending
         };
 
-        Context.PixKeys.Add(pixKey);
+        Context.PixAreas.Add(pixKey);
         await Context.SaveChangesAsync();
 
         return pixKey;
@@ -61,10 +61,10 @@ public class PixKeyRepository : BaseRepository<PixKey>, IPixKeyRepository
 
     public async Task<bool> ExistsAsync(Guid accountId, PixKeyType type, CancellationToken cancellationToken)
     {
-        return await Context.PixKeys.AnyAsync(x => x.AccountId == accountId && x.KeyType == type && x.Status == PixKeyStatus.Active, cancellationToken);
+        return await Context.PixAreas.AnyAsync(x => x.AccountId == accountId && x.KeyType == type && x.Status == PixKeyStatus.Active, cancellationToken);
     }
 
-    public async Task<PagedResult<PixKey>> GetPixKeysByIdAsync(Guid accountId, int page, int pageSize)
+    public async Task<PagedResult<PixArea>> GetPixKeysByIdAsync(Guid accountId, int page, int pageSize)
     {
         if (page < 1) page = 1;
         if (pageSize < 1) pageSize = 10;
@@ -73,7 +73,7 @@ public class PixKeyRepository : BaseRepository<PixKey>, IPixKeyRepository
 
         var items = await _dbSet.Where(x => x.AccountId == accountId).Where(x=>x.Status == PixKeyStatus.Active).OrderBy(x=>x.Id).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
-        return new PagedResult<PixKey>
+        return new PagedResult<PixArea>
         {
             Items = items,
             Page = page,
@@ -84,16 +84,22 @@ public class PixKeyRepository : BaseRepository<PixKey>, IPixKeyRepository
 
     public void RemoveKeyValue(PixKeyType pixKeyType)
     {
-        var key = _context.PixKeys.FirstOrDefault(x => x.KeyType == pixKeyType);
+        var key = _context.PixAreas.FirstOrDefault(x => x.KeyType == pixKeyType);
         if (key != null) key.Status = PixKeyStatus.Deleted;
     }
 
-    public async Task<PixKey> GetPixKeyByIdAsync(string pixKeyId)
+    public async Task<PixArea> GetPixKeyByIdAsync(string pixKeyId)
     {
-        var pixKey = await _context.PixKeys.Include(x=>x.Account).FirstOrDefaultAsync(x => x.KeyValue == pixKeyId);
+        var pixKey = await _context.PixAreas.Include(x=>x.Account).FirstOrDefaultAsync(x => x.KeyValue == pixKeyId);
         if (pixKey == null)
             throw new ApplicationException("Pix key not found.");
         
         return pixKey;
+    }
+
+    public async Task<List<PixArea>> GetAllAsync()
+    {
+        var pixKeys = await _context.PixAreas.ToListAsync();
+        return pixKeys;
     }
 }

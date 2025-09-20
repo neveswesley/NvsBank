@@ -18,7 +18,7 @@ public class Account : BaseEntity
     public Guid CustomerId { get; set; }
     public Customer Customer { get; set; }
     public Guid PixKeyId { get; set; }
-    public IEnumerable<PixKey>? PixKey { get; set; }
+    public IEnumerable<PixArea>? PixKey { get; set; }
 
     public void Deposit(decimal amount)
     {
@@ -39,4 +39,5 @@ public class Account : BaseEntity
     {
         return Balance;
     }
+
 }

@@ -30,7 +30,16 @@ public class CreatePixKeyHandler : IRequestHandler<CreatePixKey.CreatePixKeyComm
         if (exists)
             throw new Exception($"There is already a active key of type {request.KeyType} registered in this account.");
 
-        var pixKey = new Domain.Entities.PixKey
+        var pixkeysExists = await _pixKeyRepository.GetAllAsync();
+
+        if (pixkeysExists.Any(x => x.KeyValue == request.KeyValue))
+        {
+            throw new ApplicationException(
+                "The Pix key you are trying to register is already associated with another account");
+        }
+
+
+        var pixKey = new Domain.Entities.PixArea
         {
             AccountId = request.AccountId,
             KeyType = request.KeyType,

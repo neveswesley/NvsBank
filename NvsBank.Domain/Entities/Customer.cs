@@ -20,19 +20,19 @@ public sealed class Customer : Person
     public void CompleteRegistration(CustomerType type, string documentNumber, DateTime birthDate, string phoneNumber)
     {
         if (CustomerType != null)
-            throw new ApplicationException("CustomerType already exists.");
+            throw new ApplicationException("Customer has already been created.");
         CustomerType = type;
         
         if (DocumentNumber != null)
-            throw new ApplicationException("CustomerType already exists.");
+            throw new ApplicationException("Customer has already been created.");
         DocumentNumber = documentNumber;
         
         if (BirthDate != null)
-            throw new ApplicationException("CustomerType already exists.");
+            throw new ApplicationException("Customer has already been created.");
         BirthDate = birthDate;
         
         if (PhoneNumber != null)
-            throw new ApplicationException("CustomerType already exists.");
+            throw new ApplicationException("Customer has already been created.");
         PhoneNumber = phoneNumber;
         
     }

@@ -19,8 +19,9 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     public DbSet<Transaction> Transactions { get; set; }
     public DbSet<BankSlip> BankSlips { get; set; }
     public DbSet<Payment> Payments { get; set; }
-    public DbSet<PixKey> PixKeys { get; set; }
+    public DbSet<PixArea> PixAreas { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<PaymentCode> PaymentCodes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

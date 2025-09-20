@@ -28,7 +28,7 @@ public class PixKeyService
 
             var candidate = Guid.NewGuid().ToString("N");
 
-            var exists = await _db.PixKeys
+            var exists = await _db.PixAreas
                 .AsNoTracking()
                 .AnyAsync(p => p.KeyValue == candidate, cancellationToken);
 
@@ -40,12 +40,12 @@ public class PixKeyService
             $"Não foi possível gerar uma chave EVP única após {maxAttempts} tentativas.");
     }
 
-    public async Task<PixKey> CreateEvPForAccountAsync(Guid accountId, int maxAttempts = 5,
+    public async Task<PixArea> CreateEvPForAccountAsync(Guid accountId, int maxAttempts = 5,
         CancellationToken cancellationToken = default)
     {
         var evp = await GenerateUniqueEvPAsync(maxAttempts, cancellationToken);
 
-        var pixKey = new PixKey
+        var pixKey = new PixArea
         {
             Id = Guid.NewGuid(),
             AccountId = accountId,
@@ -54,7 +54,7 @@ public class PixKeyService
             Status = PixKeyStatus.Pending
         };
 
-        _db.PixKeys.Add(pixKey);
+        _db.PixAreas.Add(pixKey);
         await _db.SaveChangesAsync(cancellationToken);
 
         return pixKey;

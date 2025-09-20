@@ -4,9 +4,9 @@ using NvsBank.Domain.Entities;
 
 namespace NvsBank.Infrastructure.Configuration;
 
-public class PixKeyConfiguration : IEntityTypeConfiguration<Domain.Entities.PixKey>
+public class PixAreaConfiguration : IEntityTypeConfiguration<Domain.Entities.PixArea>
 {
-    public void Configure(EntityTypeBuilder<PixKey> builder)
+    public void Configure(EntityTypeBuilder<PixArea> builder)
     {
         builder.ToTable("PixKeys");
         

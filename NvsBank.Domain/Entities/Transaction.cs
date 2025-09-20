@@ -10,11 +10,12 @@ public class Transaction : BaseEntity
     public decimal NewBalance { get; set; }
     public decimal OldBalance { get; set; }
     public TransactionType TransactionType { get; set; }
-    public string Description { get; set; } = String.Empty;
+    public string? Description { get; set; }
     public DateTime Timestamp { get; set; }
 
     public Transaction()
     {
         
     }
+
 }

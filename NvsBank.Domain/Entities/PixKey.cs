@@ -2,7 +2,7 @@
 
 namespace NvsBank.Domain.Entities;
 
-public class PixKey : BaseEntity
+public class PixArea : BaseEntity
 {
     public Guid AccountId { get; set; }
     public PixKeyType KeyType { get; set; }
@@ -11,7 +11,7 @@ public class PixKey : BaseEntity
     
     public Account Account { get; set; }
 
-    public PixKey()
+    public PixArea()
     {
         
     }

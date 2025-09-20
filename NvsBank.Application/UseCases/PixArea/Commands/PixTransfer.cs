@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using NvsBank.Application.Interfaces;
-using NvsBank.Application.UseCases.Transaction.Commands;
 using NvsBank.Domain.Entities.DTO;
 using NvsBank.Domain.Entities.Enums;
 using NvsBank.Domain.Interfaces;
@@ -67,6 +66,10 @@ public class PixTransferHandler : IRequestHandler<PixTransferCommand, PixTransfe
         
         if (fromAccountId.Balance < request.Amount)
             throw new ApplicationException("Insufficient funds");
+        
+        if (fromAccountId.Id == toPixKey.AccountId)
+            throw new ApplicationException("You cannot transfer to yourself");
+            
         
         toAccount.Deposit(request.Amount);
         fromAccountId.Withdraw(request.Amount);

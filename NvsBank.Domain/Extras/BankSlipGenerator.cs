@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace NvsBank.Application.Shared.Extras;
+namespace NvsBank.Domain.Extras;
 
 public class BankSlipGenerator
 {

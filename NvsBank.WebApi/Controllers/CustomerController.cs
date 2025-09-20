@@ -16,7 +16,7 @@ namespace NvsBank.WebApi.Controllers
             _mediator = mediator;
         }
 
-        [HttpPut("/customer/complete/{id}")]
+        [HttpPut("complete-registration/{id}")]
         public async Task<IActionResult> Complete(Guid id, [FromBody] CompleteCustomerRegistration.CompleteCustomerRegistrationRequest request,
             CancellationToken cancellationToken)
         {
@@ -24,14 +24,14 @@ namespace NvsBank.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpGet("")]
+        [HttpGet("get-all-customers")]
         public async Task<IActionResult> GetAllCustomers(int page, int pageSize)
         {
             var response = await _mediator.Send(new GetAllCustomer.GetAllCustomerQuery(page, pageSize));
             return Ok(response);
         }
 
-        [HttpGet("id/{id}")]
+        [HttpGet("get-customer-by-id/{id}")]
         public async Task<IActionResult> GetCustomerById(Guid id)
         {
             var customer = await _mediator.Send(new GetCustomerById.GetCustomerByIdQuery(id));
@@ -39,7 +39,7 @@ namespace NvsBank.WebApi.Controllers
             return Ok(customer);
         }
 
-        [HttpGet("document/{documentNumber}")]
+        [HttpGet("get-customer-by-documentNumber/{documentNumber}")]
         public async Task<IActionResult> GetCustomerByDocumentNumber(string documentNumber)
         {
             var customer = await _mediator.Send(new GetCustomerByDocument.GetCustomerByDocumentQuery(documentNumber));
@@ -47,7 +47,7 @@ namespace NvsBank.WebApi.Controllers
             return Ok(customer);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("update-customer/{id}")]
         public async Task<IActionResult> UpdateCustomer(Guid id,
             [FromBody] UpdateCustomer.UpdateCustomerRequest request,
             CancellationToken cancellationToken)
@@ -57,7 +57,7 @@ namespace NvsBank.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpPut("update-status/{id}")]
+        [HttpPut("update-customer-status/{id}")]
         public async Task<IActionResult> UpdateStatus(Guid id,
             [FromBody] UpdateCustomerStatus.UpdateCustomerStatusRequest request, CancellationToken cancellationToken)
         {
