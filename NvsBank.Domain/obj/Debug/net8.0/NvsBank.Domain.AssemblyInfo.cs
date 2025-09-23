@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NvsBank.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3ff8e73ba14cb95b0c7d4798e8d34353b69e65ec")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+afb946cbc73e4e5a8ecb48d8ee80919005a042b2")]
 [assembly: System.Reflection.AssemblyProductAttribute("NvsBank.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NvsBank.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

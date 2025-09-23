@@ -10,5 +10,6 @@ public interface ICustomerRepository : IBaseRepository<Customer>
     Task<bool> ExistsByEmailAsync(string email);
     Task<PagedResult<Customer>> GetAllWithAddressAsync(int page, int pageSize);
     Task<Customer> GetByIdWithAddressAsync(Guid id);
+    Task<Customer> GetByIdWithAccountAsync(Guid id);
     Task<Customer> GetByDocumentWithAddressAsync(string document);
 }

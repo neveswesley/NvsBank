@@ -58,12 +58,22 @@ public class CustomerRepository : BaseRepository<Customer>, ICustomerRepository
 
     public async Task<Customer> GetByIdWithAddressAsync(Guid id)
     {
-        var customer = await _context.Customers.Include(x => x.Address).FirstOrDefaultAsync(x => x.Id == id);
+        var customer = await _context.Customers.Include(x => x.Address).Include(x=>x.Accounts).FirstOrDefaultAsync(x => x.Id == id);
         if (customer == null)
             throw new KeyNotFoundException();
         
         return customer;
     }
+
+    public async Task<Customer> GetByIdWithAccountAsync(Guid id)
+    {
+        var customer = await _context.Customers.Include(x=>x.Accounts).FirstOrDefaultAsync(x => x.Id == id);
+        if (customer == null)
+            throw new KeyNotFoundException("Customer not found.");
+
+        return customer;
+    }
+
 
     public async Task<Customer> GetByDocumentWithAddressAsync(string document)
     {
