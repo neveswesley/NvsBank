@@ -39,30 +39,10 @@ public sealed class Customer : Person
     public bool IsActive(PersonStatus status)
     {
         
-        if (status == PersonStatus.Pending)
+        if (status == PersonStatus.Pending || status == PersonStatus.Blocked || status == PersonStatus.Closed || status == PersonStatus.Inactive || status == PersonStatus.Suspended)
         {
             return false;
             
-        }
-        
-        if (status == PersonStatus.Inactive)
-        {
-            return false;
-        }
-        
-        if (status == PersonStatus.Suspended)
-        {
-            return false;
-        }
-        
-        if (status == PersonStatus.Blocked)
-        {
-            return false;
-        }
-        
-        if (status == PersonStatus.Closed)
-        {
-            return false;
         }
         
         return true;
