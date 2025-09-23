@@ -36,5 +36,36 @@ public sealed class Customer : Person
         PhoneNumber = phoneNumber;
         
     }
+    public bool IsActive(PersonStatus status)
+    {
+        
+        if (status == PersonStatus.Pending)
+        {
+            return false;
+            
+        }
+        
+        if (status == PersonStatus.Inactive)
+        {
+            return false;
+        }
+        
+        if (status == PersonStatus.Suspended)
+        {
+            return false;
+        }
+        
+        if (status == PersonStatus.Blocked)
+        {
+            return false;
+        }
+        
+        if (status == PersonStatus.Closed)
+        {
+            return false;
+        }
+        
+        return true;
+    }
     
 }

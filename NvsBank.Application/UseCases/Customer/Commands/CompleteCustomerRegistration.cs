@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Identity;
+using NvsBank.Domain.Entities;
 using NvsBank.Domain.Entities.DTO;
 using NvsBank.Domain.Entities.Enums;
 using NvsBank.Domain.Interfaces;
@@ -25,33 +27,52 @@ public class CompleteCustomerRegistration
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICustomerRepository _customerRepository;
+        private readonly UserManager<User> _userManager;
 
-        public CompleteCustomerRegistrationHandler(IUnitOfWork unitOfWork, ICustomerRepository customerRepository)
+
+        public CompleteCustomerRegistrationHandler(IUnitOfWork unitOfWork, ICustomerRepository customerRepository, UserManager<User> userManager)
         {
             _unitOfWork = unitOfWork;
             _customerRepository = customerRepository;
+            _userManager = userManager;
         }
 
         public async Task<CustomerResponse> Handle(CompleteCustomerRegistrationCommand request,
             CancellationToken cancellationToken)
         {
-            var employee = await _customerRepository.GetByIdAsync(request.Id);
-
-            employee.CompleteRegistration(request.CustomerType, request.DocumentNumber, request.BirthDate,
+            
+            var user = _userManager.Users.SingleOrDefault(u => u.Id == request.Id);
+            
+            if (user == null)
+                throw new ApplicationException("User not found");
+            
+            user.PhoneNumber = request.PhoneNumber;
+            
+            var customer = await _customerRepository.GetByIdAsync(user.PersonId);
+            
+            if (customer.IsActive(customer.Status) == false)
+            {
+                throw new ApplicationException("The user's account is not active.");
+            }
+            
+            customer.CompleteRegistration(request.CustomerType, request.DocumentNumber, request.BirthDate,
                 request.PhoneNumber);
-            _customerRepository.UpdateAsync(employee);
-            _unitOfWork.Commit(cancellationToken);
+
+            user.PhoneNumber = request.PhoneNumber;
+            
+            _customerRepository.UpdateAsync(customer);
+            await _unitOfWork.Commit(cancellationToken);
 
             var response = new CustomerResponse
             {
-                Id = employee.Id,
-                FullName = employee.FullName,
-                Type = employee.CustomerType,
-                DocumentNumber = employee.DocumentNumber,
-                BirthDate = employee.BirthDate,
-                PhoneNumber = employee.PhoneNumber,
-                Email = employee.Email,
-                Status = employee.Status
+                Id = customer.Id,
+                FullName = customer.FullName,
+                Type = customer.CustomerType,
+                DocumentNumber = customer.DocumentNumber,
+                BirthDate = customer.BirthDate,
+                PhoneNumber = customer.PhoneNumber,
+                Email = customer.Email,
+                Status = customer.Status
             };
             
             return response;

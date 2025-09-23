@@ -6,5 +6,6 @@ public enum PersonStatus
     Inactive = 2,
     Suspended = 3,
     Blocked = 4,
-    Closed = 5
+    Closed = 5,
+    Pending = 6
 }
