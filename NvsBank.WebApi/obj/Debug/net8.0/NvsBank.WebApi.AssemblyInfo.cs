@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NvsBank.WebApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ce13a09d2b2b308c29bc10820979d2cb291c7193")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3ff8e73ba14cb95b0c7d4798e8d34353b69e65ec")]
 [assembly: System.Reflection.AssemblyProductAttribute("NvsBank.WebApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NvsBank.WebApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
