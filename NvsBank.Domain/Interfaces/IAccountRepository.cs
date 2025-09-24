@@ -8,6 +8,7 @@ public interface IAccountRepository
     Task<Account> CreateAsync(Account account);
     void UpdateAsync(Account account);
     Task<Account> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<Account?> GetByUserIdAsync(Guid id, CancellationToken cancellationToken);
     Task<PagedResult<Account>> GetPagedAsync(int page, int pageSize);
     Task<PagedResult<Account>> GetActiveAsync(int page, int pageSize);
     void InactiveAsync(Account account);

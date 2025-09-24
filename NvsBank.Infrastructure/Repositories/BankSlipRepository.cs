@@ -50,19 +50,39 @@ public class BankSlipRepository : IBankSlipRepository
         };
     }
 
-    public async Task<BankSlip> GetByPayeeId(Guid payeeId)
+    public async Task<PagedResult<BankSlip>> GetByPayeeId(Guid payeeId, int page, int pageSize)
     {
-        var payee = await _context.BankSlips.FirstOrDefaultAsync(x=>x.AccountPayeeId == payeeId);
-        if (payee == null)
-            throw new ApplicationException("Payee not found");
-        return payee;
+        if (page < 1) page = 1;
+        if (pageSize < 1) pageSize = 10;
+
+        var totalCount = await _dbSet.Where(x => x.AccountPayeeId == payeeId).CountAsync();
+
+        var items = await _dbSet.Where(x=>x.AccountPayeeId == payeeId).OrderBy(x=>x.DueDate).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+        return new PagedResult<BankSlip>
+        {
+            Items = items,
+            Page = page,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
     }
 
-    public async Task<BankSlip> GetByPayerId(Guid payerId)
+    public async Task<PagedResult<BankSlip>> GetByPayerId(Guid payerId, int page, int pageSize)
     {
-        var payer = await _context.BankSlips.FirstOrDefaultAsync(x=>x.CustomerPayerId == payerId);
-        if (payer == null)
-            throw new ApplicationException("Payer not found");
-        return payer;
+        if (page < 1) page = 1;
+        if (pageSize < 1) pageSize = 10;
+        
+        var totalCount = await _dbSet.Where(x=>x.CustomerPayerId == payerId).CountAsync();
+
+        var items = await _dbSet.Where(x=>x.CustomerPayerId == payerId).OrderBy(x=>x.DueDate).Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+        return new PagedResult<BankSlip>
+        {
+            Items = items,
+            Page = page,
+            PageSize = pageSize,
+            TotalCount = totalCount
+        };
     }
 }

@@ -11,9 +11,13 @@ public class PaymentBankSlip
     public class PaymentBankSlipCommand : IRequest<Domain.Entities.Payment>
     {
         public string DigitableLine { get; set; } = string.Empty;
-        public Guid PayerAccountId { get; set; }
+        public Guid PayerAccountId { get; private set; }
         public string IdempotencyKey { get; set; } = string.Empty;
+        
+        public void SetPayerAccount(Guid accountId) => PayerAccountId = accountId;
     }
+
+    public sealed record PayBankSlipRequest(string DigitableLine, Guid PayerAccountId, string IdempotencyKey) : IRequest<PaymentBankSlipCommand>;
 
     public class PaymentBankSlipHandler : IRequestHandler<PaymentBankSlipCommand, Domain.Entities.Payment>
     {

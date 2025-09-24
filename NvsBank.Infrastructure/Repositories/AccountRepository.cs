@@ -39,7 +39,15 @@ public class AccountRepository : IAccountRepository
         
         return account;
     }
-    
+
+    public async Task<Account?> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        var account = await _context.Accounts.Include(x => x.Customer).ThenInclude(x => x.User)
+            .FirstOrDefaultAsync(x => x.Customer.User.Id == userId, cancellationToken);
+        
+        return account;
+    }
+
     public async Task<PagedResult<Account>> GetPagedAsync(int page, int pageSize)
     {
         if (page < 1) page = 1;

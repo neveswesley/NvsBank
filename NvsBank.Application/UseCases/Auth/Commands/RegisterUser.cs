@@ -55,6 +55,7 @@ namespace NvsBank.Application.UseCases.Auth.Commands
                 FullName = request.FullName,
                 Email = request.Email,
                 Status = PersonStatus.Pending,
+                CustomerType = CustomerType.Individual,
                 Limits = new OperationLimits
                 {
                     CustomerSingleTransferLimit = 5000,

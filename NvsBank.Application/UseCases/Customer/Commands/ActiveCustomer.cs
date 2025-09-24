@@ -8,9 +8,9 @@ namespace NvsBank.Application.UseCases.Customer.Commands;
 
 public class ActiveCustomer
 {
-    public sealed record ActiveCustomerCommand(Guid CustomerId, AccountType Type) : IRequest<AccountResponse>;
+    public sealed record ActiveCustomerCommand(Guid CustomerId) : IRequest<AccountResponse>;
 
-    public sealed record ActiveCustomerRequest (AccountType Type) : IRequest<ActiveCustomerCommand>;
+    public sealed record ActiveCustomerRequest : IRequest<ActiveCustomerCommand>;
 
     public class ActiveCustomerHandler : IRequestHandler<ActiveCustomerCommand, AccountResponse>
     {
@@ -38,13 +38,13 @@ public class ActiveCustomer
             var account = new Domain.Entities.Account
             {
                 CustomerId = request.CustomerId,
-                AccountType = request.Type,
+                AccountType = AccountType.Checking
             };
-
-            customer.AccountId = account.Id;
-
+            
             await _accountRepository.CreateAsync(account);
 
+            customer.AccountId = account.Id;
+            
             await _unitOfWork.Commit(cancellationToken);
 
             return new AccountResponse

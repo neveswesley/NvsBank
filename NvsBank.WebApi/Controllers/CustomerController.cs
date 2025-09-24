@@ -91,7 +91,7 @@ namespace NvsBank.WebApi.Controllers
         public async Task<IActionResult> ActiveCustomer(Guid id,
             [FromBody] ActiveCustomer.ActiveCustomerRequest request, CancellationToken cancellationToken)
         {
-            var command = new ActiveCustomer.ActiveCustomerCommand(id, request.Type);
+            var command = new ActiveCustomer.ActiveCustomerCommand(id);
             var response = await _mediator.Send(command, cancellationToken);
             return Ok(response);
         }
