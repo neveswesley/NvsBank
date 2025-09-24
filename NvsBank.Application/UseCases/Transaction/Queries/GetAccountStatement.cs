@@ -25,13 +25,16 @@ public abstract class GetAccountStatement
         public async Task<AccountStatementResponse> Handle(GetAccountStatementQuery request,
             CancellationToken cancellationToken)
         {
+
+            var fromDays = request.From <= 0 ? 10 : request.From;
+            
             var account = await _accountRepository.GetByIdAsync(request.AccountId, cancellationToken);
             if (account == null)
                 throw new ApplicationException($"Account {request.AccountId} not found");
 
             var allTransactions = await _transactionRepository.GetByAccountIdAsync(account.Id, request.Page, request.PageSize);
-
-            var fromDate = DateTime.UtcNow.Subtract(TimeSpan.FromDays(request.From));
+            
+            var fromDate = DateTime.UtcNow.Subtract(TimeSpan.FromDays(fromDays));
 
             decimal GetSignedAmount(Domain.Entities.Transaction t) =>
                 t.TransactionType == TransactionType.Withdraw ? -t.Amount : t.Amount;
