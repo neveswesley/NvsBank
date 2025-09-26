@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using NvsBank.Application.Interfaces;
 using NvsBank.Domain.Entities.DTO;
+using NvsBank.Infrastructure.Exceptions;
 
 namespace NvsBank.Application.UseCases.Account.Commands;
 
@@ -24,7 +25,10 @@ public class DeleteAccount
 
         public async Task<DeleteAccountResponse> Handle(Query request, CancellationToken cancellationToken)
         {
-            var account = _accountRepository.GetByIdAsync(request.Id, cancellationToken).Result;
+            var account = await _accountRepository.GetByIdAsync(request.Id, cancellationToken);
+            if (account == null)
+                throw new NotFoundException("Account not found");
+            
             _accountRepository.InactiveAsync(account);
             await _unitOfWork.Commit(cancellationToken);
             return new DeleteAccountResponse("Account has been closed.");

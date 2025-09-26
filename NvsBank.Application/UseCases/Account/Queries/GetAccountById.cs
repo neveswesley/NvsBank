@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using NvsBank.Application.Interfaces;
+using NvsBank.Infrastructure.Exceptions;
 
 namespace NvsBank.Application.UseCases.Account.Queries;
 
@@ -21,7 +22,7 @@ public abstract class GetAccountById
         {
             var account = await _accountRepository.GetByIdAsync(request.AccountId, cancellationToken);
             if (account == null)
-                throw new ApplicationException("Account not found.");
+                throw new NotFoundException("Account not found.");
             
             return account;
         }

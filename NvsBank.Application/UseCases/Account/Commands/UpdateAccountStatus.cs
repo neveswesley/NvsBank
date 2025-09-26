@@ -2,6 +2,7 @@
 using NvsBank.Application.Interfaces;
 using NvsBank.Domain.Entities.DTO;
 using NvsBank.Domain.Entities.Enums;
+using NvsBank.Infrastructure.Exceptions;
 
 namespace NvsBank.Application.UseCases.Account.Commands;
 
@@ -32,12 +33,12 @@ public abstract class UpdateAccountStatus
         {
             var account = _accountRepository.GetByIdAsync(request.AccountId, cancellationToken).Result;
             if (account == null)
-                throw new ApplicationException("Account not found.");
+                throw new NotFoundException("Account not found.");
 
             var oldStatus = account.AccountStatus;
 
             if (oldStatus == AccountStatus.Closed && request.Status == AccountStatus.Active)
-                throw new ApplicationException("Closed account cannot be reactivated.");
+                throw new BadRequestException("Closed account cannot be reactivated.");
 
             account.AccountStatus = request.Status;
             account.StatusReason = request.Reason;

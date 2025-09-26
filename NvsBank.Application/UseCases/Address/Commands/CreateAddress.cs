@@ -2,6 +2,7 @@
 using MediatR;
 using NvsBank.Application.Interfaces;
 using NvsBank.Domain.Entities.DTO;
+using NvsBank.Infrastructure.Exceptions;
 
 namespace NvsBank.Application.UseCases.Address.Commands;
 
@@ -33,16 +34,13 @@ public abstract class CreateAddress
             var address = _mapper.Map<Domain.Entities.Address>(request);
 
             await _addressRepository.CreateAsync(address);
-            
-            if (address.CustomerId == null)
-                throw new ApplicationException("Customer not found.");
 
             var customer = await _unitOfWork.Customers.GetByIdAsync(address.CustomerId);
             if (customer == null)
-                throw new ApplicationException("Customer not found.");
+                throw new NotFoundException("Customer not found.");
             
             if (customer.AddressId != null)
-                throw new ApplicationException("Customer address already exists.");
+                throw new BadRequestException("Customer address already exists.");
 
             customer.AddressId = address.Id;
             

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using NvsBank.Application.Interfaces;
+using NvsBank.Infrastructure.Exceptions;
 
 namespace NvsBank.Application.UseCases.Address.Commands;
 
@@ -25,17 +26,14 @@ public abstract class DeleteAddress
 
             var customer = await _unitOfWork.Customers.GetByIdAsync(request.Id);
             if (customer == null)
-                throw new NullReferenceException("Customer not found");
+                throw new NotFoundException("Customer not found");
             
             var address = await _addressRepository.GetByIdAsync(customer.AddressId);
             if (address == null)
-                throw new ApplicationException("Address not found");
+                throw new NotFoundException("Address not found");
 
-            if (customer != null)
-            {
-                customer.AddressId = null;
-                customer.Address = null;
-            }
+            customer.AddressId = null;
+            customer.Address = null;
 
             _addressRepository.DeleteAsync(address);
             await _unitOfWork.Commit(cancellationToken);

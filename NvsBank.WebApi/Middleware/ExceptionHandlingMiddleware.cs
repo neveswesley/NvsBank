@@ -1,54 +1,66 @@
-﻿namespace NvsBank.WebApi.Middleware;
+﻿using System.Net;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
-public class ExceptionHandlingMiddleware
+namespace NvsBank.API.Middleware
 {
-    private readonly RequestDelegate _next;
-
-    public ExceptionHandlingMiddleware(RequestDelegate next)
+    public class ExceptionHandlingMiddleware
     {
-        _next = next;
-    }
+        private readonly RequestDelegate _next;
+        private readonly ILogger<ExceptionHandlingMiddleware> _logger;
 
-    public async Task Invoke(HttpContext context)
-    {
-        try
+        public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
         {
-            await _next(context);
+            _next = next;
+            _logger = logger;
         }
-        catch (FluentValidation.ValidationException ex)
+
+        public async Task Invoke(HttpContext context)
         {
-            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            try
+            {
+                await _next(context);
+            }
+            catch (Exception ex)
+            {
+                await HandleExceptionAsync(context, ex, _logger);
+            }
+        }
+
+        private static async Task HandleExceptionAsync(HttpContext context, Exception ex, ILogger logger)
+        {
             context.Response.ContentType = "application/json";
 
-            var errors = ex.Errors.Select(e => new
-            {
-                Field = e.PropertyName,
-                Message = e.ErrorMessage,
-                Severity = e.Severity.ToString()
-            });
+            int statusCode;
+            string message = ex.Message;
 
-            var result = new
+            switch (ex)
             {
-                StatusCode = 400,
-                Title = "Validation Failed",
-                Errors = errors
+                case ApplicationException:
+                    statusCode = (int)HttpStatusCode.Unauthorized; // 401
+                    break;
+                case ArgumentException:          // ex: validação de parâmetros
+                case FormatException:
+                    statusCode = (int)HttpStatusCode.BadRequest; // 400
+                    break;
+                default:
+                    statusCode = (int)HttpStatusCode.InternalServerError; // 500
+                    message = "Internal server error";
+                    logger.LogError(ex, "Unhandled exception");
+                    break;
+            }
+
+            context.Response.StatusCode = statusCode;
+
+            var response = new
+            {
+                status = statusCode,
+                error = message
             };
 
-            await context.Response.WriteAsJsonAsync(result);
-        }
-        catch (Exception ex)
-        {
-            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            context.Response.ContentType = "application/json";
-
-            var result = new
-            {
-                StatusCode = 500,
-                Title = "Internal Server Error",
-                Detail = ex.Message
-            };
-
-            await context.Response.WriteAsJsonAsync(result);
+            var json = JsonSerializer.Serialize(response);
+            await context.Response.WriteAsync(json);
         }
     }
 }

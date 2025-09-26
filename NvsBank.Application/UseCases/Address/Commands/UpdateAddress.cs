@@ -4,6 +4,7 @@ using NvsBank.Application.Interfaces;
 using NvsBank.Domain.Entities;
 using NvsBank.Domain.Entities.DTO;
 using NvsBank.Domain.Interfaces;
+using NvsBank.Infrastructure.Exceptions;
 
 namespace NvsBank.Application.UseCases.Address.Commands;
 
@@ -45,7 +46,7 @@ public abstract class UpdateAddress
         {
             var customer = await _customerRepository.GetByIdAsync(request.Id);
             if (customer == null)
-                throw new KeyNotFoundException("Customer not found");
+                throw new NotFoundException("Customer not found");
 
             var address = await _addressRepository.GetByIdAsync(customer.AddressId);
         

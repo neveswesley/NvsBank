@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using NvsBank.Application.Interfaces;
+using NvsBank.Infrastructure.Exceptions;
 
 namespace NvsBank.Application.UseCases.Account.Queries;
 
@@ -25,6 +26,8 @@ public interface GetBalance
         public async Task<decimal> Handle(GetBalanceCommand request, CancellationToken cancellationToken)
         {
             var account = await _accountRepository.GetByIdAsync(request.AccountId, cancellationToken);
+            if (account == null)
+                throw new NotFoundException("Account not found.");
             
             return account.Balance;
             

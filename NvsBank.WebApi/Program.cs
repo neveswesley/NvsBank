@@ -1,12 +1,11 @@
 using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using NvsBank.Infrastructure.Database;
+using NvsBank.API.Middleware;
 using NvsBank.Application.Services;
-using NvsBank.Application.UseCases.Auth.Commands;
 using NvsBank.Domain.Entities;
-using NvsBank.WebApi.Middleware;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using NvsBank.Infrastructure.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 

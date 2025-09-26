@@ -4,6 +4,7 @@ using NvsBank.Application.Interfaces;
 using NvsBank.Domain.Entities.DTO;
 using NvsBank.Domain.Entities.Enums;
 using NvsBank.Domain.Interfaces;
+using NvsBank.Infrastructure.Exceptions;
 
 namespace NvsBank.Application.UseCases.Account.Commands;
 
@@ -35,13 +36,13 @@ public class CreateAccountHandler : IRequestHandler<CreateAccountCommand, Accoun
         var customer = await _customerRepository.GetByIdWithAccountAsync(command.CustomerId);
         
         if (customer == null)
-            throw new ApplicationException("Customer not found.");
+            throw new NotFoundException("Customer not found.");
 
         if (customer.Status != PersonStatus.Active)
-            throw new ApplicationException("Customer is not active.");
+            throw new UnauthorizedException("Customer is not active.");
 
         if (customer.Accounts.Any(x => x.AccountType == command.AccountType))
-            throw new InvalidOperationException("Customer already has an account of this type.");
+            throw new BadRequestException("Customer already has an account of this type.");
         
         customer.AccountId = account.Id;
 
