@@ -36,7 +36,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
         Context.Remove(entity);
     }
 
-    public async Task<T> GetByIdAsync(Guid id)
+    public async Task<T> GetByIdAsync(Guid? id)
     {
         return await Context.Set<T>().FirstOrDefaultAsync(a=>a.Id == id);
     }

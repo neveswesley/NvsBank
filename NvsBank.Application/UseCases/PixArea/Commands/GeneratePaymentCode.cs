@@ -7,6 +7,12 @@ namespace NvsBank.Application.UseCases.Payment;
 public class GeneratePaymentCode
 {
     public sealed record GenerateReceiptCommand(decimal Amount, Guid AccountId) : IRequest<string>;
+    
+    public sealed record GenerateReceiptRequest(decimal Amount)
+    {
+        public GenerateReceiptCommand ToCommand(Guid accountId)
+            => new GenerateReceiptCommand(Amount, accountId);
+    }
 
     public class GenerateReceiptHandler : IRequestHandler<GenerateReceiptCommand, string>
     {

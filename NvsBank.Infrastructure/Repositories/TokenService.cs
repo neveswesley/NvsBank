@@ -42,4 +42,14 @@ public class TokenService : ITokenService
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);    }
+
+    public RefreshToken GenerateRefreshToken(Guid userId)
+    {
+        return new RefreshToken
+        {
+            UserId = userId,
+            Token = Convert.ToBase64String(Guid.NewGuid().ToByteArray()),
+            ExpiresAt = DateTime.UtcNow.AddDays(7)
+        };
+    }
 }

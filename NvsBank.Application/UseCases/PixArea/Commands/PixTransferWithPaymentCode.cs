@@ -10,6 +10,11 @@ namespace NvsBank.Application.UseCases.Payment;
 public class PixTransferWithPaymentCode
 {
     public sealed record PaymentCodeCommand(Guid SourceAccountId, string PaymentCode) : IRequest<TransferResponse>;
+    public sealed record PixTransferWithPaymentCodeRequest(string PaymentCode)
+    {
+        public PaymentCodeCommand ToCommand(Guid accountId)
+            => new PaymentCodeCommand(accountId, PaymentCode);
+    }
 
     public class PaymentCodeHandler : IRequestHandler<PaymentCodeCommand, TransferResponse>
     {

@@ -47,6 +47,9 @@ public abstract class UpdateCustomer
 
             if (customer == null)
                 throw new KeyNotFoundException($"User {request.Id} not found");
+            
+            user.FullName = request.FullName;
+            user.Email = request.Email;
 
             customer.UpdateCustomer(request.FullName, request.PhoneNumber, request.Email);
 

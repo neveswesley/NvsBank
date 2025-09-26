@@ -84,6 +84,12 @@ public class CustomerRepository : BaseRepository<Customer>, ICustomerRepository
         return customer;
     }
 
+    public Task<Customer?> GetCustomerByUserId(Guid userId)
+    {
+        var customer = _context.Customers.FirstOrDefaultAsync(x=>x.UserId == userId);
+        return customer;
+    }
+
     public async Task<Customer> DeleteAddress(Guid id)
     {
         var customer = await _context.Customers.FirstOrDefaultAsync(x => x.Id == id);

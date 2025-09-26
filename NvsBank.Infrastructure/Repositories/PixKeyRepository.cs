@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NvsBank.Application.Interfaces;
 using NvsBank.Domain.Entities;
 using NvsBank.Domain.Entities.DTO;
 using NvsBank.Domain.Entities.Enums;
@@ -11,11 +12,13 @@ public class PixKeyRepository : BaseRepository<PixArea>, IPixKeyRepository
 {
     private readonly AppDbContext _context;
     private readonly DbSet<PixArea> _dbSet;
+    private readonly IAccountRepository _accountRepository;
 
-    public PixKeyRepository(AppDbContext context) : base(context)
+    public PixKeyRepository(AppDbContext context, IAccountRepository accountRepository) : base(context)
     {
         _context = context;
         _dbSet = context.Set<PixArea>();
+        _accountRepository = accountRepository;
     }
 
     public async Task<string> GenerateUniqueEvPAsync(int maxAttempts = 5, CancellationToken cancellationToken = default)
@@ -59,9 +62,9 @@ public class PixKeyRepository : BaseRepository<PixArea>, IPixKeyRepository
         return pixKey;
     }
 
-    public async Task<bool> ExistsAsync(Guid accountId, PixKeyType type, CancellationToken cancellationToken)
+    public async Task<bool> ExistsAsync(Guid accountId)
     {
-        return await Context.PixAreas.AnyAsync(x => x.AccountId == accountId && x.KeyType == type && x.Status == PixKeyStatus.Active, cancellationToken);
+        return await Context.PixAreas.AnyAsync(x => x.AccountId == accountId && x.KeyType == PixKeyType.CPF && x.Status == PixKeyStatus.Active);
     }
 
     public async Task<PagedResult<PixArea>> GetPixKeysByIdAsync(Guid accountId, int page, int pageSize)
@@ -82,11 +85,6 @@ public class PixKeyRepository : BaseRepository<PixArea>, IPixKeyRepository
         };
     }
 
-    public void RemoveKeyValue(PixKeyType pixKeyType)
-    {
-        var key = _context.PixAreas.FirstOrDefault(x => x.KeyType == pixKeyType);
-        if (key != null) key.Status = PixKeyStatus.Deleted;
-    }
 
     public async Task<PixArea> GetPixKeyByIdAsync(string pixKeyId)
     {
@@ -101,5 +99,11 @@ public class PixKeyRepository : BaseRepository<PixArea>, IPixKeyRepository
     {
         var pixKeys = await _context.PixAreas.ToListAsync();
         return pixKeys;
+    }
+
+    public async Task<bool> IsUserAccountAsync(Guid userId, Guid accountId, CancellationToken cancellationToken)
+    {
+        return await _context.Accounts.Include(x=>x.Customer).ThenInclude(x=>x.User)
+            .AnyAsync(a => a.Id == accountId && a.Customer.UserId == userId, cancellationToken);
     }
 }

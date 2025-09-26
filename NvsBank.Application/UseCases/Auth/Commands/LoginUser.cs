@@ -7,20 +7,25 @@ namespace NvsBank.Application.UseCases.Auth.Commands;
 
 public class LoginUser
 {
-    public sealed record LoginUserCommand(string Email, string Password) : IRequest<string>;
     
-    public class LoginUserHandler : IRequestHandler<LoginUserCommand, string>
+    public sealed record LoginUserCommand(string Email, string Password) : IRequest<AuthResponse>;
+    
+    public sealed record AuthResponse(string acessToken, string refreshToken);
+    
+    public class LoginUserHandler : IRequestHandler<LoginUserCommand, AuthResponse>
     {
         private readonly UserManager<User> _userManager;
         private readonly ITokenService _tokenService;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
 
-        public LoginUserHandler(UserManager<User> userManager, ITokenService tokenService)
+        public LoginUserHandler(UserManager<User> userManager, ITokenService tokenService, IRefreshTokenRepository refreshTokenRepository)
         {
             _userManager = userManager;
             _tokenService = tokenService;
+            _refreshTokenRepository = refreshTokenRepository;
         }
 
-        public async Task<string> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+        public async Task<AuthResponse> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
@@ -29,8 +34,14 @@ public class LoginUser
             var isValid = await _userManager.CheckPasswordAsync(user, request.Password);
             if (!isValid)
                 throw new ApplicationException("Incorrect password");
+            
+            var acessToken = _tokenService.GenerateToken(user);
+            
+            var refreshToken = _tokenService.GenerateRefreshToken(user.Id);
+            
+            await _refreshTokenRepository.AddAsync(refreshToken, cancellationToken);
 
-            return _tokenService.GenerateToken(user);
+            return new AuthResponse(acessToken, refreshToken.Token);
         }
     }
 }

@@ -22,11 +22,15 @@ public abstract class DeleteAddress
 
         public async Task<DeleteAddressResponse> Handle(DeleteAddressCommand request, CancellationToken cancellationToken)
         {
-            var address = await _addressRepository.GetByIdAsync(request.Id);
+
+            var customer = await _unitOfWork.Customers.GetByIdAsync(request.Id);
+            if (customer == null)
+                throw new NullReferenceException("Customer not found");
+            
+            var address = await _addressRepository.GetByIdAsync(customer.AddressId);
             if (address == null)
                 throw new ApplicationException("Address not found");
 
-            var customer = await _unitOfWork.Customers.GetByIdAsync(address.CustomerId);
             if (customer != null)
             {
                 customer.AddressId = null;

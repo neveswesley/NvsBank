@@ -35,6 +35,9 @@ public static class ServiceExtensions
         services.AddScoped<IUserRepository, UserRepository>();
         
         services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+        
         services.AddScoped<IPaymentCodeRepository, PaymentCodeRepository>();
+        
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
     }
 }

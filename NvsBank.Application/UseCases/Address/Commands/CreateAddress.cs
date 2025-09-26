@@ -7,14 +7,12 @@ namespace NvsBank.Application.UseCases.Address.Commands;
 
 public abstract class CreateAddress
 {
-    public sealed record CreateAddressCommand : IRequest<AddressResponse>
+    public sealed record CreateAddressCommand(string Street, string Number, string City, string State, string ZipCode, Guid CustomerId)
+        : IRequest<AddressResponse>;
+
+    public sealed record CreateAddressRequest(string Street, string Number, string City, string State, string ZipCode)
     {
-        public string Street { get; set; }
-        public string Number { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string ZipCode { get; set; }
-        public Guid CustomerId { get; set; }
+        public CreateAddressCommand ToCommand(Guid customerId) => new CreateAddressCommand(Street, Number, City, State, ZipCode, customerId);
     }
     
     public class CreateAddressHandler : IRequestHandler<CreateAddressCommand, AddressResponse>
@@ -35,15 +33,19 @@ public abstract class CreateAddress
             var address = _mapper.Map<Domain.Entities.Address>(request);
 
             await _addressRepository.CreateAsync(address);
+            
             if (address.CustomerId == null)
                 throw new ApplicationException("Customer not found.");
 
             var customer = await _unitOfWork.Customers.GetByIdAsync(address.CustomerId);
             if (customer == null)
                 throw new ApplicationException("Customer not found.");
+            
+            if (customer.AddressId != null)
+                throw new ApplicationException("Customer address already exists.");
 
             customer.AddressId = address.Id;
-        
+            
             _unitOfWork.Customers.UpdateAsync(customer);
 
             await _unitOfWork.Commit(cancellationToken);

@@ -10,6 +10,12 @@ namespace NvsBank.Application.UseCases.PixKey.Commands;
 public sealed record PixTransferCommand(Guid FromAccountId, string ToPixKey, decimal Amount, string Description)
     : IRequest<PixTransferResponse>;
 
+public sealed record PixTransferRequest(string ToPixKey, decimal Amount, string Description)
+{
+    public PixTransferCommand ToCommand(Guid accountId)
+        => new PixTransferCommand(accountId, ToPixKey, Amount, Description);
+}
+
 public class PixTransferHandler : IRequestHandler<PixTransferCommand, PixTransferResponse>
 {
     private readonly IAccountRepository _accountRepository;

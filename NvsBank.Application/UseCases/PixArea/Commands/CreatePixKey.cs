@@ -7,9 +7,14 @@ namespace NvsBank.Application.UseCases.PixKey.Commands;
 
 public class CreatePixKey
 {
-    public sealed record CreatePixKeyCommand(Guid AccountId, PixKeyType KeyType, string KeyValue)
+    public sealed record CreatePixKeyCommand(Guid AccountId, string KeyValue, PixKeyType KeyType)
         : IRequest<PixKeyResponse>;
-}
+    
+    public sealed record CreatePixKeyRequest(string Value, PixKeyType Type)
+    {
+        public CreatePixKeyCommand ToCommand(Guid accountId)
+            => new CreatePixKeyCommand(accountId, Value, Type);
+    }}
 
 public class CreatePixKeyHandler : IRequestHandler<CreatePixKey.CreatePixKeyCommand, PixKeyResponse>
 {
@@ -25,14 +30,15 @@ public class CreatePixKeyHandler : IRequestHandler<CreatePixKey.CreatePixKeyComm
     public async Task<PixKeyResponse> Handle(CreatePixKey.CreatePixKeyCommand request,
         CancellationToken cancellationToken)
     {
-        var exists = await _pixKeyRepository.ExistsAsync(request.AccountId, request.KeyType, cancellationToken);
-
-        if (exists)
-            throw new Exception($"There is already a active key of type {request.KeyType} registered in this account.");
-
         var pixkeysExists = await _pixKeyRepository.GetAllAsync();
 
-        if (pixkeysExists.Any(x => x.KeyValue == request.KeyValue))
+
+        if (pixkeysExists.Any(x => x.AccountId == request.AccountId && request.KeyType == PixKeyType.CPF && x.Status == PixKeyStatus.Active))
+        {
+            throw new Exception($"A CPF Pix key is already registered for this account.");
+        }
+
+        if (pixkeysExists.Any(x => x.KeyValue == request.KeyValue && x.Status == PixKeyStatus.Active))
         {
             throw new ApplicationException(
                 "The Pix key you are trying to register is already associated with another account");

@@ -12,4 +12,5 @@ public interface ICustomerRepository : IBaseRepository<Customer>
     Task<Customer> GetByIdWithAddressAsync(Guid id);
     Task<Customer> GetByIdWithAccountAsync(Guid id);
     Task<Customer> GetByDocumentWithAddressAsync(string document);
+    Task<Customer?> GetCustomerByUserId(Guid userId);
 }
