@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using NvsBank.Application.Exceptions;
 using NvsBank.Application.Interfaces;
 using NvsBank.Domain.Entities;
 using NvsBank.Domain.Entities.DTO;
@@ -35,12 +36,12 @@ public abstract class UpdateCustomerStatus
         {
             var customer = _customerRepository.GetByIdAsync(request.CustomerId).Result;
             if (customer == null)
-                throw new ApplicationException("Customer not found.");
+                throw new NotFoundException("Customer not found.");
             
             var oldStatus = customer.Status;
 
             if (oldStatus == PersonStatus.Closed && request.Status == PersonStatus.Active)
-                throw new ApplicationException("Closed customer cannot be reactivated.");
+                throw new BadRequestException("Closed customer cannot be reactivated.");
 
             customer.Status = request.Status;
             customer.StatusReason = request.Reason;

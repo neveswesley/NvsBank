@@ -1,6 +1,6 @@
 ﻿using MediatR;
+using NvsBank.Application.Exceptions;
 using NvsBank.Application.Interfaces;
-using NvsBank.Infrastructure.Exceptions;
 
 namespace NvsBank.Application.UseCases.Address.Commands;
 

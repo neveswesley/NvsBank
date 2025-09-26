@@ -1,4 +1,4 @@
-﻿namespace NvsBank.Infrastructure.Exceptions;
+﻿namespace NvsBank.Application.Exceptions;
 
 public class UnauthorizedException : Exception
 {

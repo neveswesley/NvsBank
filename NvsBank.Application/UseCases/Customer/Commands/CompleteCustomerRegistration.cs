@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using NvsBank.Application.Exceptions;
 using NvsBank.Domain.Entities;
 using NvsBank.Domain.Entities.DTO;
 using NvsBank.Domain.Entities.Enums;
@@ -44,7 +45,7 @@ public class CompleteCustomerRegistration
             var user = _userManager.Users.SingleOrDefault(u => u.Id == request.Id);
             
             if (user == null)
-                throw new ApplicationException("User not found");
+                throw new NotFoundException("User not found");
             
             user.PhoneNumber = request.PhoneNumber;
             
@@ -52,7 +53,7 @@ public class CompleteCustomerRegistration
             
             if (customer.IsActive(customer.Status) == false)
             {
-                throw new ApplicationException("The user's account is not active.");
+                throw new UnauthorizedException("The user's account is not active.");
             }
             
             customer.CompleteRegistration(request.CustomerType, request.DocumentNumber, request.BirthDate,

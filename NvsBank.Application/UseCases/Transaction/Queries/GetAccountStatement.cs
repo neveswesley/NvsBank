@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using NvsBank.Application.Exceptions;
 using NvsBank.Application.Interfaces;
 using NvsBank.Domain.Entities.DTO;
 using NvsBank.Domain.Entities.Enums;
@@ -30,7 +31,7 @@ public abstract class GetAccountStatement
             
             var account = await _accountRepository.GetByIdAsync(request.AccountId, cancellationToken);
             if (account == null)
-                throw new ApplicationException($"Account {request.AccountId} not found");
+                throw new NotFoundException($"Account {request.AccountId} not found");
 
             var allTransactions = await _transactionRepository.GetByAccountIdAsync(account.Id, request.Page, request.PageSize);
             

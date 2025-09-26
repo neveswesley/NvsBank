@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using NvsBank.Application.Exceptions;
 using NvsBank.Application.Interfaces;
 using NvsBank.Domain.Entities.DTO;
 
@@ -25,7 +26,7 @@ public abstract class GetAddressById
         {
             var response = await _addressRepository.GetByIdWithCustomerAsync(request.Id);
             if (response == null)
-                throw new ApplicationException("Address not found");
+                throw new NotFoundException("Address not found");
 
             return new AddressResponse
             {

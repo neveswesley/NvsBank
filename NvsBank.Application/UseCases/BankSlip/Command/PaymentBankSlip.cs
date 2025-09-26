@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using NvsBank.Application.Exceptions;
 using NvsBank.Application.Interfaces;
 using NvsBank.Domain.Entities.Enums;
 using NvsBank.Domain.Interfaces;
@@ -42,7 +43,7 @@ public class PaymentBankSlip
         {
             var bankSlip = await _bankSlipRepository.GetByDigitableLine(request.DigitableLine);
             if (bankSlip == null)
-                throw new ApplicationException("No bank slip found");
+                throw new NotFoundException("No bank slip found");
 
             var existingPayment =
                 await _paymentRepository.GetByIdempotencyKeyAsync(bankSlip.Id, request.IdempotencyKey,
@@ -52,7 +53,7 @@ public class PaymentBankSlip
                 return existingPayment;
 
             if (bankSlip.IsPaid)
-                throw new ApplicationException("Bank slip is paid");
+                throw new BadRequestException("Bank slip is paid");
 
             var payee = await _accountRepository.GetByIdAsync(bankSlip.AccountPayeeId, cancellationToken);
 
@@ -61,7 +62,7 @@ public class PaymentBankSlip
             var payableAmount = bankSlip.CalculatePayableAmount(DateTime.Now);
 
             if (payer.Balance < payableAmount)
-                throw new ApplicationException("Insufficient balance");
+                throw new BadRequestException("Insufficient balance");
 
             payee.Deposit(payableAmount);
             payer.Withdraw(payableAmount);

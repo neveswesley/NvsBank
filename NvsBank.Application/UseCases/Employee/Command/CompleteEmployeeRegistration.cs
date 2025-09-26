@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using NvsBank.Application.Exceptions;
 using NvsBank.Domain.Entities.DTO;
 using NvsBank.Domain.Interfaces;
 
@@ -33,7 +34,7 @@ public class CompleteEmployeeRegistration
             var employeeCompleteRegistration = await _repository.GetByIdAsync(request.Id);
             
             if (employeeCompleteRegistration == null)
-                throw new ApplicationException("Employee not found.");
+                throw new NotFoundException("Employee not found.");
             
             employeeCompleteRegistration.CompleteRegistrationEmployee(request.DocumentNumber, request.BirthDate, request.PhoneNumber);
             

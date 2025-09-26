@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using NvsBank.Application.Exceptions;
 using NvsBank.Application.Interfaces;
 using NvsBank.Domain.Entities.DTO;
 using NvsBank.Domain.Entities.Enums;
@@ -35,15 +36,15 @@ public class PixTransferWithPaymentCode
         {
             var sourceAccount = await _accountRepository.GetByIdAsync(request.SourceAccountId, cancellationToken);
             if (sourceAccount == null)
-                throw new ApplicationException("Account not found");
+                throw new NotFoundException("Account not found");
 
             var paymentCode = await _paymentCodeRepository.GetByPaymentCode(request.PaymentCode);
             if (paymentCode == null)
-                throw new ApplicationException("Receipt not found");
+                throw new NotFoundException("Receipt not found");
 
             var receiverAccount = await _accountRepository.GetByIdAsync(paymentCode.AccountId, cancellationToken);
             if (sourceAccount == null)
-                throw new ApplicationException("Account not found");
+                throw new NotFoundException("Account not found");
 
             var sourcePayment = new Domain.Entities.Transaction
             {
@@ -68,7 +69,7 @@ public class PixTransferWithPaymentCode
             };
             
             if (paymentCode.DueDate < DateTime.Now)
-                throw new ApplicationException("The Pix payment code you are trying to use has expired.");
+                throw new BadRequestException("The Pix payment code you are trying to use has expired.");
 
             await _transactionRepository.AddAsync(sourcePayment);
             await _transactionRepository.AddAsync(receiverPayment);

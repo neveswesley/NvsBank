@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using NvsBank.Application.Exceptions;
 using NvsBank.Application.Interfaces;
 using NvsBank.Domain.Entities.DTO;
 using NvsBank.Domain.Entities.Enums;
@@ -25,11 +26,11 @@ public class RemoveKeyValueHandler : IRequestHandler<RemoveKeyValueCommand, Unit
     {
         var pixKey = await _pixKeyRepository.GetByIdAsync(request.PixKeyId);
         if (pixKey == null || pixKey.Status != PixKeyStatus.Active)
-            throw new KeyNotFoundException("Pix key not found");
+            throw new NotFoundException("Pix key not found");
         
         bool isOwner = await _pixKeyRepository.IsUserAccountAsync(request.UserId, pixKey.AccountId, cancellationToken);
         if (!isOwner)
-            throw new UnauthorizedAccessException("You cannot delete a Pix key that does not belong to this account");
+            throw new UnauthorizedException("You cannot delete a Pix key that does not belong to this account");
         
         pixKey.Status = PixKeyStatus.Deleted;
         _pixKeyRepository.UpdateAsync(pixKey);

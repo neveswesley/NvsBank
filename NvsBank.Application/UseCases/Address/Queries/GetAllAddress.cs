@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using NvsBank.Application.Exceptions;
 using NvsBank.Application.Interfaces;
 using NvsBank.Domain.Entities.DTO;
 
@@ -29,7 +30,7 @@ public abstract class GetAllAddress
             var addressPaged = await _addressRepository.GetAllWithCustomerAsync(request.Page, request.PageSize);
 
             if (addressPaged == null)
-                throw new ApplicationException("Address not found.");
+                throw new NotFoundException("Address not found.");
 
             var addressResponse = addressPaged.Items.Select(x => new AddressResponse
             {

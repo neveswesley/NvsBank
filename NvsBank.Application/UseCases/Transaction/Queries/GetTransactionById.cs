@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using NvsBank.Application.Exceptions;
 using NvsBank.Domain.Entities.DTO;
 using NvsBank.Infrastructure.Repositories;
 
@@ -23,7 +24,7 @@ public abstract class GetTransactionById
             var transactions = await _transactionRepository.GetByAccountIdAsync(request.AccountId, request.Page, request.PageSize);
             
             if (transactions == null)
-                throw new ApplicationException($"Account {request.AccountId} not found");
+                throw new NotFoundException($"Account {request.AccountId} not found");
 
             var response = transactions.Items.Select(t => new TransactionResponse
             {

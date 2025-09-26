@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using NvsBank.Application.Exceptions;
 using NvsBank.Domain.Interfaces;
 
 namespace NvsBank.Application.UseCases.Auth.Commands;
@@ -28,14 +29,14 @@ public class RefreshTokenUser
             var refreshToken = await _refreshTokenRepository.GetByTokenAsync(request.Token, cancellationToken);
 
             if (refreshToken == null || refreshToken.IsRevoked || refreshToken.IsUsed || refreshToken.IsExpired)
-                throw new ApplicationException("Invalid refresh token");
+                throw new UnauthorizedException("Invalid refresh token");
 
             refreshToken.IsUsed = true;
             await _refreshTokenRepository.UpdateAsync(refreshToken, cancellationToken);
 
             var user = await _userRepository.GetByIdAsync(refreshToken.UserId, cancellationToken);
             if (user == null)
-                throw new ApplicationException("User not found");
+                throw new NotFoundException("User not found");
 
             var newAccessToken = _tokenService.GenerateToken(user);
             var newRefreshToken = _tokenService.GenerateRefreshToken(user.Id);

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using NvsBank.Application.Exceptions;
 using NvsBank.Domain.Entities.DTO;
 using NvsBank.Domain.Entities.Enums;
 using NvsBank.Domain.Interfaces;
@@ -35,15 +36,18 @@ public class CreatePixKeyHandler : IRequestHandler<CreatePixKey.CreatePixKeyComm
 
         if (pixkeysExists.Any(x => x.AccountId == request.AccountId && request.KeyType == PixKeyType.CPF && x.Status == PixKeyStatus.Active))
         {
-            throw new Exception($"A CPF Pix key is already registered for this account.");
+            throw new BadRequestException($"A CPF Pix key is already registered for this account.");
         }
 
         if (pixkeysExists.Any(x => x.KeyValue == request.KeyValue && x.Status == PixKeyStatus.Active))
         {
-            throw new ApplicationException(
+            throw new BadRequestException(
                 "The Pix key you are trying to register is already associated with another account");
         }
-
+        
+        if (!Enum.IsDefined(typeof(PixKeyType), request.KeyType))
+            throw new BadRequestException($"Invalid KeyType: {request.KeyType}");
+        
 
         var pixKey = new Domain.Entities.PixArea
         {

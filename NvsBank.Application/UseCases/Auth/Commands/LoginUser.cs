@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using NvsBank.Application.Exceptions;
 using NvsBank.Domain.Entities;
 using NvsBank.Domain.Interfaces;
 
@@ -29,11 +30,11 @@ public class LoginUser
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
-                throw new ApplicationException("User not found");
+                throw new NotFoundException("User not found");
 
             var isValid = await _userManager.CheckPasswordAsync(user, request.Password);
             if (!isValid)
-                throw new ApplicationException("Incorrect password");
+                throw new UnauthorizedException("Incorrect password");
             
             var acessToken = _tokenService.GenerateToken(user);
             

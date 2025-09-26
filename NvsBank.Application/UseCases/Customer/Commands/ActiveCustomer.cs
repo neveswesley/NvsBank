@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using NvsBank.Application.Exceptions;
 using NvsBank.Application.Interfaces;
 using NvsBank.Domain.Entities.DTO;
 using NvsBank.Domain.Entities.Enums;
@@ -31,7 +32,7 @@ public class ActiveCustomer
             var customer = await _customerRepository.GetByIdAsync(request.CustomerId);
 
             if (customer.Status == PersonStatus.Active)
-                throw new ApplicationException("The customer account is already active.");
+                throw new BadRequestException("The customer account is already active.");
 
             customer.Status = PersonStatus.Active;
 

@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using NvsBank.Application.Exceptions;
 using NvsBank.Application.Interfaces;
 using NvsBank.Domain.Entities;
 using NvsBank.Domain.Entities.DTO;
 using NvsBank.Domain.Interfaces;
-using NvsBank.Infrastructure.Exceptions;
 
 namespace NvsBank.Application.UseCases.Address.Commands;
 

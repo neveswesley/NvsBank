@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using NvsBank.Application.Exceptions;
 using NvsBank.Application.Interfaces;
 using NvsBank.Domain.Entities;
 using NvsBank.Domain.Entities.DTO;
@@ -41,12 +42,12 @@ public abstract class UpdateCustomer
         {
             var user = _userManager.Users.SingleOrDefault(u => u.Id == request.Id);
             if (user == null)
-                throw new ApplicationException("User not found");
+                throw new NotFoundException("User not found");
 
             var customer = await _customerRepository.GetByIdAsync(user.PersonId);
 
             if (customer == null)
-                throw new KeyNotFoundException($"User {request.Id} not found");
+                throw new NotFoundException($"User {request.Id} not found");
             
             user.FullName = request.FullName;
             user.Email = request.Email;

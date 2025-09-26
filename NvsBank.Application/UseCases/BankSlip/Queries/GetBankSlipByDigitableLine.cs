@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using NvsBank.Application.Exceptions;
 using NvsBank.Domain.Entities.DTO;
 using NvsBank.Domain.Interfaces;
 
@@ -22,7 +23,7 @@ public class GetBankSlipByDigitableLine
         {
             var bankSlip = await _repository.GetByDigitableLine(request.DigitableLine);
             if (bankSlip == null)
-                throw new ApplicationException("No bank slip found");
+                throw new NotFoundException("No bank slip found");
             
             return new BankSlipResponse
             {

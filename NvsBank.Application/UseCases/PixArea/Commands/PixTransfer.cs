@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using NvsBank.Application.Exceptions;
 using NvsBank.Application.Interfaces;
 using NvsBank.Domain.Entities.DTO;
 using NvsBank.Domain.Entities.Enums;
@@ -38,11 +39,11 @@ public class PixTransferHandler : IRequestHandler<PixTransferCommand, PixTransfe
     {
         var fromAccountId = await _accountRepository.GetByIdAsync(request.FromAccountId, cancellationToken);
         if (fromAccountId == null)
-            throw new ApplicationException("Account not found");
+            throw new NotFoundException("Account not found");
 
         var toPixKey = await _pixKeyRepository.GetPixKeyByIdAsync(request.ToPixKey);
         if (toPixKey == null)
-            throw new ApplicationException("PixKey not found");
+            throw new NotFoundException("PixKey not found");
 
         var transactionSource = new Domain.Entities.Transaction
         {
@@ -71,10 +72,10 @@ public class PixTransferHandler : IRequestHandler<PixTransferCommand, PixTransfe
         var toAccount = await _accountRepository.GetByIdAsync(account, cancellationToken);
         
         if (fromAccountId.Balance < request.Amount)
-            throw new ApplicationException("Insufficient funds");
+            throw new BadRequestException("Insufficient funds");
         
         if (fromAccountId.Id == toPixKey.AccountId)
-            throw new ApplicationException("You cannot transfer to yourself");
+            throw new BadRequestException("You cannot transfer to yourself");
             
         
         toAccount.Deposit(request.Amount);

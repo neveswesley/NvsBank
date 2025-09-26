@@ -1,8 +1,8 @@
 ﻿using MediatR;
+using NvsBank.Application.Exceptions;
 using NvsBank.Application.Interfaces;
 using NvsBank.Domain.Entities.DTO;
 using NvsBank.Domain.Entities.Enums;
-using NvsBank.Infrastructure.Exceptions;
 
 namespace NvsBank.Application.UseCases.Account.Commands;
 

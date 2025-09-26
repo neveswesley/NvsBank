@@ -1,7 +1,7 @@
-﻿using System.Net;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using System.Text.Json;
+﻿using System.Text.Json;
+using NvsBank.Application.Exceptions;
+
+// Ajusta namespace conforme sua pasta Exceptions
 
 namespace NvsBank.API.Middleware
 {
@@ -24,32 +24,25 @@ namespace NvsBank.API.Middleware
             }
             catch (Exception ex)
             {
-                await HandleExceptionAsync(context, ex, _logger);
+                await HandleExceptionAsync(context, ex);
             }
         }
 
-        private static async Task HandleExceptionAsync(HttpContext context, Exception ex, ILogger logger)
+        private static async Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
             context.Response.ContentType = "application/json";
 
-            int statusCode;
-            string message = ex.Message;
-
-            switch (ex)
+            int statusCode = ex switch
             {
-                case ApplicationException:
-                    statusCode = (int)HttpStatusCode.Unauthorized; // 401
-                    break;
-                case ArgumentException:          // ex: validação de parâmetros
-                case FormatException:
-                    statusCode = (int)HttpStatusCode.BadRequest; // 400
-                    break;
-                default:
-                    statusCode = (int)HttpStatusCode.InternalServerError; // 500
-                    message = "Internal server error";
-                    logger.LogError(ex, "Unhandled exception");
-                    break;
-            }
+                NotFoundException => StatusCodes.Status404NotFound,
+                UnauthorizedException => StatusCodes.Status401Unauthorized,
+                BadRequestException => StatusCodes.Status400BadRequest,
+                _ => StatusCodes.Status500InternalServerError
+            };
+
+            string message = ex.Message;
+            if (statusCode == 500)
+                message = "Internal server error";
 
             context.Response.StatusCode = statusCode;
 

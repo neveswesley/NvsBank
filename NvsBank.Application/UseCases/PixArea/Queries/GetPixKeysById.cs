@@ -14,6 +14,7 @@ public class GetPixKeysByIdHandler(IPixKeyRepository pixKeyRepository)
         CancellationToken cancellationToken)
     {
         var pixKeys = await pixKeyRepository.GetPixKeysByIdAsync(request.AccountId, request.Page, request.PageSize);
+
         var response = pixKeys.Items.Select(x => new PixKeyByIdResponse
         {
             KeyType = x.KeyType,

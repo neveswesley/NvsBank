@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using NvsBank.Application.Exceptions;
 using NvsBank.Application.Interfaces;
 using NvsBank.Domain.Entities.DTO;
 using NvsBank.Domain.Interfaces;
@@ -21,7 +22,8 @@ public abstract class GetCustomerById
         public async Task<GetCustomerResponse> Handle(GetCustomerByIdQuery request, CancellationToken cancellationToken)
         {
             var customer = await _customerRepository.GetByIdAsync(request.Id);
-            if (customer == null) throw new ApplicationException($"Customer {request.Id} not found");
+            if (customer == null)
+                throw new NotFoundException($"Customer {request.Id} not found");
 
             return new GetCustomerResponse
             {

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using NvsBank.Application.Exceptions;
 using NvsBank.Application.Interfaces;
 using NvsBank.Application.Shared.Extras;
 using NvsBank.Domain.Entities.DTO;
@@ -36,18 +37,18 @@ public abstract class CreateBankSlip
         {
             var accountPayee = await _accountRepository.GetByIdAsync(request.AccountPayeeId, cancellationToken);
             if (accountPayee == null)
-                throw new ApplicationException("Payee not found");
+                throw new NotFoundException("Payee not found");
             
             var customerPayer = await _unitOfWork.Customers.GetByIdAsync(request.CustomerPayerId);
             if (customerPayer == null)
-                throw new ApplicationException("Payer not found");
+                throw new NotFoundException("Payer not found");
         
             var digitableLine = BankSlipGenerator.GenerateDigitableLine(request.Amount, DateTime.Today.AddDays(3), request.AccountPayeeId);
 
             var accountPayer = customerPayer.AccountId;
             
             if (request.AccountPayeeId == accountPayer)
-                throw new ApplicationException("The payer account cannot be the same as the payee account.");
+                throw new BadRequestException("The payer account cannot be the same as the payee account.");
             
             var bankSlip = new Domain.Entities.BankSlip
             {
